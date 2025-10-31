@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Refactors>
+  <Renames>
+    <RenamedType>
+      <Type guid="ab80e117-590d-4f4d-9475-8c9b964ae03d">FB_UICOMPONENET</Type>
+      <From>FB_UiComponenet</From>
+      <To>FB_UiComponent</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="91c36fa3-bacd-42e1-9ae3-cc8732ed5933">ST_COMPONENTDESCRIPTOR</Type>
+      <From>ST_ComponentDescriptor</From>
+      <To>ST_ComponentConfiguration</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="cd8946ae-fcce-41a8-aa7f-93013b5580e2">ST_SYSTEMDESCRIPTOR</Type>
+      <From>ST_SystemDescriptor</From>
+      <To>ST_SystemStatus</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="311b71ac-3ac0-4e13-94b9-0b3e62285297">GPL_VISION</Type>
+      <From>GPL_Vision</From>
+      <To>GPL_UiComponent</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="616dc179-725c-4eb3-8095-d170339ad288">ST_COMPONENTCONFIGURATION</Type>
+      <From>ST_ComponentConfiguration</From>
+      <To>ST_CommandConfiguration</To>
+    </RenamedType>
+  </Renames>
+</Refactors>

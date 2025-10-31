@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <GVL Name="GC_UiComponent" Id="{0bdfeb15-bc5e-49ec-8a3d-5017687badf4}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL CONSTANT
+	INDEX_COMMAND_MIN : DINT := GPL_UiComponent.INDEX_COMMAND_MIN;
+	INDEX_COMMAND_MAX : DINT := GPL_UiComponent.INDEX_COMMAND_MAX;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_UIStatus" Id="{8010ae4a-d7a3-49e7-98fa-6b18ba4c6504}">
+    <Declaration><![CDATA[TYPE ST_UIStatus :
+STRUCT
+	ComponentStatus : REFERENCE TO ST_ComponentStatus;
+	ConnectionStatus	: BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

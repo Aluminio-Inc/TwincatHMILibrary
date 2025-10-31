@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_UiComponent" Id="{2742ecb2-761a-4453-9a6c-8cabc08f3022}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_UiComponent EXTENDS FB_Component<GC_UiComponent.INDEX_COMMAND_MIN, GC_UiComponent.INDEX_COMMAND_MAX> //IMPLEMENTS 
+VAR CONSTANT
+	INDEX_COMMAND_CONNECT	: DINT := 0;
+END_VAR
+
+VAR
+	HMIStatus : ST_UIStatus;
+END_VAR
+
+VAR_OUTPUT
+	Descriptor : ST_CommandConfiguration
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

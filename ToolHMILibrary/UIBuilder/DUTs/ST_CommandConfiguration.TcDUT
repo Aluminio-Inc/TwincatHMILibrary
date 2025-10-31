@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_CommandConfiguration" Id="{616dc179-725c-4eb3-8095-d170339ad288}">
+    <Declaration><![CDATA[TYPE ST_CommandConfiguration :
+STRUCT
+	CommandConfiguration : REFERENCE	TO ST_CommandConfiguration;
+	ComponentName          : STRING;
+	ComponentTyoe          : STRING;
+	CommandCount           : DINT;
+	
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
