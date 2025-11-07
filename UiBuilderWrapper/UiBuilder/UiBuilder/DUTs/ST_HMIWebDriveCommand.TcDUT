@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_HMIWebDriveCommand" Id="{24c9034d-f86c-4664-a257-7c0323ce05c2}">
+    <Declaration><![CDATA[TYPE ST_HMIWebDriveCommand :
+STRUCT
+	PowerOn		: BOOL;
+	PowerOff	: BOOL;
+	Resert		: BOOL;
+	Reser 		: BOOL;
+	Stop 		: BOOL ;
+	Calibrate	: BOOL;
+	
+	SetTension 	: LREAL;
+	ScrollDist	: LREAL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

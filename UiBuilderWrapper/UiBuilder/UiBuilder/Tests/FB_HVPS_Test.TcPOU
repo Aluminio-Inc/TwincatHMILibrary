@@ -8,7 +8,7 @@ VAR_OUTPUT
 END_VAR
 VAR
 	testHVPS : FB_HVPS;
-	mockHVPSSystem : FB_HVPS_System;
+	mockHVPSSystem : FB_HVPS_System;  // Concrete type for both test and wrapper
 	testCommand : ST_HMICommand;
 	testStatus : ST_HMIHvpsStatus;
 END_VAR

@@ -361,3 +361,13 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/ADSVisionLibrary
+/aluminiosw
+/BinaryComponentBase
+/BinaryDevices
+/Motion
+/TwinCATBase
+/V3Tool
+/twincat_HVPS
+/UiBuilder
+/UiBuilderLibrary

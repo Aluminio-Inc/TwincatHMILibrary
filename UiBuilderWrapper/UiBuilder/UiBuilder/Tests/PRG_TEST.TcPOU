@@ -13,6 +13,7 @@ VAR
 	fbBinaryDeviceTest : FB_BinaryDevice_Test;
 	fbVisionTest : FB_HMIVision_Test;
 	fbHVPSTest : FB_HVPS_Test;
+	fbMotionTest : FB_MotionDevices_Test;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -25,7 +26,7 @@ END_VAR
 // Test Coverage:
 // - Base Data Types: ST_HMICommand, ST_HMIComponentAPI, ST_HMIStatus
 // - Base Function Block: FB_HMIBase
-// - HMI Wrappers: FB_BinaryDevice, FB_HMIVision, FB_HVPS
+// - HMI Wrappers: FB_BinaryDevice, FB_HMIVision, FB_HVPS, FB_MotionDevices
 //
 // Usage:
 // 1. Add PRG_TEST to your PlcTask or call from MAIN
@@ -45,6 +46,7 @@ fbHMIBaseTest();
 fbBinaryDeviceTest();
 fbVisionTest();
 fbHVPSTest();
+fbMotionTest();
 
 TcUnit.RUN();]]></ST>
     </Implementation>

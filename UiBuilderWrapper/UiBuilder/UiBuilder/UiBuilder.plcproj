@@ -30,7 +30,13 @@
     <Compile Include="DUTs\ST_HMIHvpsStatus.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\ST_HMIWebDriveStatus.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\ST_HMIStatus.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\ST_HMIWebDriveCommand.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ITFs\I_HMIBase.TcIO">
@@ -39,16 +45,22 @@
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\DiscreteDevices\FB_BinaryDevice.TcPOU">
+    <Compile Include="POUs\Discrete\FB_BinaryDevice.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\DiscreteDevices\I_BinaryDevice.TcIO">
+    <Compile Include="POUs\Discrete\I_BinaryDevice.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\FB_HMIBase.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Motion\Components\FB_RotaryEncoder.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Motion\Components\FB_Zaber.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\Motion\FB_MotionDevices.TcPOU">
@@ -81,6 +93,9 @@
     <Compile Include="Tests\FB_HVPS_Test.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tests\FB_MotionDevices_Test.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Tests\PRG_TEST.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -89,9 +104,10 @@
     <Folder Include="DUTs" />
     <Folder Include="GVLs" />
     <Folder Include="ITFs" />
-    <Folder Include="POUs\DiscreteDevices" />
+    <Folder Include="POUs\Discrete" />
     <Folder Include="POUs\Motion" />
     <Folder Include="POUs\HVPS" />
+    <Folder Include="POUs\Motion\Components" />
     <Folder Include="POUs\Vision" />
     <Folder Include="Tests\BaseTests" />
     <Folder Include="VISUs" />
@@ -151,9 +167,6 @@
     <PlaceholderResolution Include="Motion">
       <Resolution>Motion, * (Photara)</Resolution>
     </PlaceholderResolution>
-    <PlaceholderResolution Include="Nemo">
-      <Resolution>Nemo, * (Photara)</Resolution>
-    </PlaceholderResolution>
     <PlaceholderResolution Include="SysDir">
       <Resolution>SysDir, * (System)</Resolution>
     </PlaceholderResolution>
@@ -206,8 +219,8 @@
   <ProjectExtensions>
     <PlcProjectOptions>
       <XmlArchive>
-  <Data>
-    <o xml:space="preserve" t="OptionKey">
+        <Data>
+          <o xml:space="preserve" t="OptionKey">
       <v n="Name">"&lt;ProjectRoot&gt;"</v>
       <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
         <v>{192FAD59-8248-4824-A8DE-9177C94C195A}</v>
@@ -277,14 +290,14 @@
       </d>
       <d n="Values" t="Hashtable" />
     </o>
-  </Data>
-  <TypeList>
-    <Type n="Boolean">System.Boolean</Type>
-    <Type n="Hashtable">System.Collections.Hashtable</Type>
-    <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
-    <Type n="String">System.String</Type>
-  </TypeList>
-</XmlArchive>
+        </Data>
+        <TypeList>
+          <Type n="Boolean">System.Boolean</Type>
+          <Type n="Hashtable">System.Collections.Hashtable</Type>
+          <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
+          <Type n="String">System.String</Type>
+        </TypeList>
+      </XmlArchive>
     </PlcProjectOptions>
   </ProjectExtensions>
 </Project>

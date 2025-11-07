@@ -3,7 +3,7 @@
   <POU Name="FB_HMIVision" Id="{b76f3680-5def-4f09-9741-0aa6629d1724}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_HMIVision EXTENDS FB_HMIBase
 VAR
-	vision : REFERENCE TO FB_ADSVision;
+	vision : Vision.I_Vision;  // Using interface for polymorphism
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -16,10 +16,16 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[// Sync status from vision to HMI
-status.HmiStatus.Busy := vision.Busy;
-status.HmiStatus.Done := vision.P_HandshakeStatus.ResultsReceived;
-status.HmiStatus.Error := vision.Error;
-status.HmiStatus.ErrorID := vision.P_HandshakeStatus.VisionResult.ResultCode;
+IF __ISVALIDREF(vision.P_BaseStatus) THEN
+	status.HmiStatus.Busy := vision.P_BaseStatus.Busy;
+	status.HmiStatus.Error := vision.P_BaseStatus.Error;
+	status.HmiStatus.ErrorID := UDINT_TO_BYTE(vision.P_BaseStatus.ErrorID);
+END_IF
+
+// Use handshake status for Done flag
+IF __ISVALIDREF(vision.P_HandshakeStatus) THEN
+	status.HmiStatus.Done := vision.P_HandshakeStatus.ResultsReceived;
+END_IF
 
 // Handle commands from Vue.js
 IF cmd.Trigger THEN
@@ -28,14 +34,26 @@ IF cmd.Trigger THEN
 END_IF]]></ST>
       </Implementation>
     </Method>
-    <Method Name="Init" Id="{8bbbca94-fa6c-4c61-9d57-8f6dfd6db76f}">
-      <Declaration><![CDATA[METHOD Init : BOOL
+    <Method Name="FB_init" Id="{8bbbca94-fa6c-4c61-9d57-8f6dfd6db76f}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
 VAR_INPUT
-	refVision : REFERENCE TO FB_ADSVision;
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[vision REF= refVision;]]></ST>
+        <ST><![CDATA[// Standard FB constructor - no custom initialization needed]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Init" Id="{8bbbca95-fa6c-4c61-9d57-8f6dfd6db76f}">
+      <Declaration><![CDATA[METHOD Init : BOOL
+VAR_INPUT
+	refVision : Vision.I_Vision;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[vision := refVision;
+Init := TRUE;]]></ST>
       </Implementation>
     </Method>
   </POU>

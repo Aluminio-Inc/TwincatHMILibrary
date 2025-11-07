@@ -8,7 +8,7 @@ VAR_OUTPUT
 END_VAR
 VAR
 	testVisionHMI : FB_HMIVision;
-	mockVision : FB_ADSVision;
+	mockVision : FB_ADSVision;  // Concrete type for test mock
 	testCommand : ST_HMICommand;
 	testStatus : ST_HMIStatus;
 END_VAR

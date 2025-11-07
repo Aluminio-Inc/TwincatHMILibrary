@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_HMIWebDriveStatus" Id="{7c628b72-9457-4b4b-b959-b4a70f39a9bf}">
+    <Declaration><![CDATA[TYPE ST_HMIWebDriveStatus EXTENDS ST_HMIStatus :
+STRUCT
+	DriveState : Motion.E_WebDriveState;
+	Calibrated : BOOL;
+	TensionerRadius : LREAL;
+	TensionerTension : LREAL;
+	WinderRadius : LREAL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
