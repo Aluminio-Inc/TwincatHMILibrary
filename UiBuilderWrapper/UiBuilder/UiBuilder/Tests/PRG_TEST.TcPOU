@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="PRG_TEST" Id="{a5555555-5555-5555-5555-555555555555}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_TEST
+VAR
+	// Base component test suite instances
+	fbCommandTest : FB_ST_HMICommand_Test;
+	fbComponentAPITest : FB_ST_HMIComponentAPI_Test;
+	fbStatusTest : FB_ST_HMIStatus_Test;
+	fbHMIBaseTest : FB_HMIBase_Test;
+
+	// HMI wrapper test suite instances
+	fbBinaryDeviceTest : FB_BinaryDevice_Test;
+	fbVisionTest : FB_HMIVision_Test;
+	fbHVPSTest : FB_HVPS_Test;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// ============================================================================
+// UiBuilder Library Test Suite
+// ============================================================================
+// This program runs all unit tests for the UiBuilder library using TcUnit
+// framework. Call this program from your main task to execute tests.
+//
+// Test Coverage:
+// - Base Data Types: ST_HMICommand, ST_HMIComponentAPI, ST_HMIStatus
+// - Base Function Block: FB_HMIBase
+// - HMI Wrappers: FB_BinaryDevice, FB_HMIVision, FB_HVPS
+//
+// Usage:
+// 1. Add PRG_TEST to your PlcTask or call from MAIN
+// 2. Build and download the project
+// 3. Run the PLC
+// 4. Check TcUnit results in the output window
+// ============================================================================
+
+// Execute all test suites
+// TcUnit automatically collects and reports results through FB_TestSuite base class
+fbCommandTest();
+fbComponentAPITest();
+fbStatusTest();
+fbHMIBaseTest();
+
+// HMI wrapper tests
+fbBinaryDeviceTest();
+fbVisionTest();
+fbHVPSTest();
+
+TcUnit.RUN();]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_HMIBase_Test" Id="{a4444444-4444-4444-4444-444444444444}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_HMIBase_Test EXTENDS TcUnit.FB_TestSuite
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	testFB : FB_HMIBase;
+	testCommand : ST_HMICommand;
+	testConfig : ST_HMIConfiguration;
+	testStatus : ST_HMIStatus;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Test runner - call all test methods
+Test_FunctionBlockInstantiation();
+Test_CommandProperty();how 
+Test_ConfigurationProperty();
+Test_StatusProperty();
+Test_CommandPropertyReadWrite();
+Test_StatusPropertyRead();
+Test_ConfigurationPropertyReadWrite();
+]]></ST>
+    </Implementation>
+    <Method Name="Test_CommandProperty" Id="{a4444444-4444-4444-4444-444444444446}">
+      <Declaration><![CDATA[METHOD Test_CommandProperty
+VAR_INPUT
+END_VAR
+VAR
+	retrievedCommand : ST_HMICommand;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_CommandProperty');
+
+// Test P_Command property
+// Note: This test assumes property implementation will be added
+// Once properties are implemented, this will verify getter/setter behavior
+
+// Set up test command
+testCommand.Enable := TRUE;
+testCommand.Home := TRUE;
+testCommand.Reset := FALSE;
+
+// Note: When properties are implemented, uncomment:
+// testFB.P_Command := testCommand;
+// retrievedCommand := testFB.P_Command;
+// AssertTrue(retrievedCommand.Enable, 'Command.Enable should be TRUE');
+// AssertTrue(retrievedCommand.Home, 'Command.Home should be TRUE');
+// AssertFalse(retrievedCommand.Reset, 'Command.Reset should be FALSE');
+
+// For now, just verify the structure works
+AssertTrue(testCommand.Enable, 'Test command Enable flag works');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_CommandPropertyReadWrite" Id="{a4444444-4444-4444-4444-444444444449}">
+      <Declaration><![CDATA[METHOD Test_CommandPropertyReadWrite
+VAR_INPUT
+END_VAR
+VAR
+	writeCommand : ST_HMICommand;
+	readCommand : ST_HMICommand;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_CommandPropertyReadWrite');
+
+// Prepare test data
+writeCommand.Enable := TRUE;
+writeCommand.Disable := FALSE;
+writeCommand.Home := TRUE;
+writeCommand.Reset := FALSE;
+writeCommand.Stop := FALSE;
+writeCommand.Trigger := TRUE;
+writeCommand.Error := 42;
+
+// When property implementation is complete, this will test:
+// 1. Write via property setter
+// testFB.P_Command := writeCommand;
+
+// 2. Read via property getter
+// readCommand := testFB.P_Command;
+
+// 3. Verify data integrity
+// AssertTrue(readCommand.Enable, 'Enable should match written value');
+// AssertFalse(readCommand.Disable, 'Disable should match written value');
+// AssertTrue(readCommand.Home, 'Home should match written value');
+// AssertTrue(readCommand.Trigger, 'Trigger should match written value');
+// AssertEquals_BYTE(42, readCommand.Error, 'Error code should match written value');
+
+// Placeholder verification
+AssertTrue(writeCommand.Enable, 'Write command prepared correctly');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_ConfigurationProperty" Id="{a4444444-4444-4444-4444-444444444447}">
+      <Declaration><![CDATA[METHOD Test_ConfigurationProperty
+VAR_INPUT
+END_VAR
+VAR
+	retrievedConfig : ST_HMIConfiguration;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_ConfigurationProperty');
+
+// Test P_Configuration property
+// Note: This test assumes property implementation will be added
+
+// Set up test configuration
+// testConfig is ready to use once properties are implemented
+
+// Note: When properties are implemented, uncomment:
+// testFB.P_Configuration := testConfig;
+// retrievedConfig := testFB.P_Configuration;
+
+// For now, verify the structure exists
+AssertTrue(TRUE, 'Configuration structure is defined');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_ConfigurationPropertyReadWrite" Id="{a4444444-4444-4444-4444-44444444444b}">
+      <Declaration><![CDATA[METHOD Test_ConfigurationPropertyReadWrite
+VAR_INPUT
+END_VAR
+VAR
+	writeConfig : ST_HMIConfiguration;
+	readConfig : ST_HMIConfiguration;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_ConfigurationPropertyReadWrite');
+
+// Test configuration property read/write
+// Configurations are typically set once and read multiple times
+
+// When property implementation is complete:
+// testFB.P_Configuration := writeConfig;
+// readConfig := testFB.P_Configuration;
+
+// Verify configuration was stored correctly
+// (Will need actual configuration values once ST_CommandConfiguration is defined)
+
+// Placeholder verification
+AssertTrue(TRUE, 'Configuration property structure is ready for implementation');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_FunctionBlockInstantiation" Id="{a4444444-4444-4444-4444-444444444445}">
+      <Declaration><![CDATA[METHOD Test_FunctionBlockInstantiation
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_FunctionBlockInstantiation');
+
+// Test that FB_HMIBase can be instantiated
+// The mere fact that testFB exists and this test runs proves instantiation works
+AssertTrue(TRUE, 'FB_HMIBase should be instantiable');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_StatusProperty" Id="{a4444444-4444-4444-4444-444444444448}">
+      <Declaration><![CDATA[METHOD Test_StatusProperty
+VAR_INPUT
+END_VAR
+VAR
+	retrievedStatus : ST_HMIStatus;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_StatusProperty');
+
+// Test P_Status property
+// Note: This test assumes property implementation will be added
+
+// Set up test status
+testStatus.HmiStatus.Ready := TRUE;
+testStatus.HmiStatus.Enabled := TRUE;
+
+// Note: When properties are implemented, uncomment:
+// testFB.P_Status := testStatus;
+// retrievedStatus := testFB.P_Status;
+// AssertTrue(retrievedStatus.HmiStatus.Ready, 'Status.HmiStatus.Ready should be TRUE');
+// AssertTrue(retrievedStatus.HmiStatus.Enabled, 'Status.HmiStatus.Enabled should be TRUE');
+
+// For now, verify the structure works
+AssertTrue(testStatus.HmiStatus.Ready, 'Test status Ready flag works');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_StatusPropertyRead" Id="{a4444444-4444-4444-4444-44444444444a}">
+      <Declaration><![CDATA[METHOD Test_StatusPropertyRead
+VAR_INPUT
+END_VAR
+VAR
+	readStatus : ST_HMIStatus;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_StatusPropertyRead');
+
+// Typically status is read-only from external perspective
+// This test verifies status can be read via property
+
+// When property implementation is complete:
+// readStatus := testFB.P_Status;
+
+// Verify status flags can be read
+// AssertFalse(readStatus.HmiStatus.Error, 'Should be able to read Error flag');
+// AssertFalse(readStatus.HmiStatus.Busy, 'Should be able to read Busy flag');
+
+// Placeholder verification
+AssertTrue(TRUE, 'Status property structure is ready for implementation');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_ST_HMIComponentAPI_Test" Id="{a2222222-2222-2222-2222-222222222222}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ST_HMIComponentAPI_Test EXTENDS TcUnit.FB_TestSuite
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	testAPI : ST_HMIComponentAPI;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Test runner - call all test methods
+Test_InitialState();
+Test_DoneFlag();
+Test_BusyFlag();
+Test_ErrorFlag();
+Test_ErrorIDFlag();
+Test_ReadyFlag();
+Test_EnabledFlag();
+Test_HomedFlag();
+Test_MovingFlag();
+Test_StateTransitions();
+Test_ErrorState();
+Test_BusyToDone();
+Test_AllFlagsSet();
+Test_ClearAllFlags();
+]]></ST>
+    </Implementation>
+    <Method Name="Test_InitialState" Id="{a2222222-2222-2222-2222-222222222223}">
+      <Declaration><![CDATA[METHOD Test_InitialState
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_InitialState');
+
+// Initialize all flags to FALSE
+testAPI.Done := FALSE;
+testAPI.Busy := FALSE;
+testAPI.Error := FALSE;
+testAPI.ErrorID := FALSE;
+testAPI.Ready := FALSE;
+testAPI.Enabled := FALSE;
+testAPI.Homed := FALSE;
+testAPI.Moving := FALSE;
+
+// Verify initial state
+AssertFalse(testAPI.Done, 'Done should be FALSE initially');
+AssertFalse(testAPI.Busy, 'Busy should be FALSE initially');
+AssertFalse(testAPI.Error, 'Error should be FALSE initially');
+AssertFalse(testAPI.ErrorID, 'ErrorID should be FALSE initially');
+AssertFalse(testAPI.Ready, 'Ready should be FALSE initially');
+AssertFalse(testAPI.Enabled, 'Enabled should be FALSE initially');
+AssertFalse(testAPI.Homed, 'Homed should be FALSE initially');
+AssertFalse(testAPI.Moving, 'Moving should be FALSE initially');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_DoneFlag" Id="{a2222222-2222-2222-2222-222222222224}">
+      <Declaration><![CDATA[METHOD Test_DoneFlag
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_DoneFlag');
+
+// Test Done flag can be set
+testAPI.Done := TRUE;
+AssertTrue(testAPI.Done, 'Done should be TRUE when set');
+
+// Reset
+testAPI.Done := FALSE;
+AssertFalse(testAPI.Done, 'Done should be FALSE when reset');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_BusyFlag" Id="{a2222222-2222-2222-2222-222222222225}">
+      <Declaration><![CDATA[METHOD Test_BusyFlag
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_BusyFlag');
+
+// Test Busy flag can be set
+testAPI.Busy := TRUE;
+AssertTrue(testAPI.Busy, 'Busy should be TRUE when set');
+
+// Reset
+testAPI.Busy := FALSE;
+AssertFalse(testAPI.Busy, 'Busy should be FALSE when reset');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_ErrorFlag" Id="{a2222222-2222-2222-2222-222222222226}">
+      <Declaration><![CDATA[METHOD Test_ErrorFlag
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_ErrorFlag');
+
+// Test Error flag can be set
+testAPI.Error := TRUE;
+AssertTrue(testAPI.Error, 'Error should be TRUE when set');
+
+// Reset
+testAPI.Error := FALSE;
+AssertFalse(testAPI.Error, 'Error should be FALSE when reset');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_ErrorIDFlag" Id="{a2222222-2222-2222-2222-222222222227}">
+      <Declaration><![CDATA[METHOD Test_ErrorIDFlag
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_ErrorIDFlag');
+
+// Test ErrorID flag can be set
+testAPI.ErrorID := TRUE;
+AssertTrue(testAPI.ErrorID, 'ErrorID should be TRUE when set');
+
+// Reset
+testAPI.ErrorID := FALSE;
+AssertFalse(testAPI.ErrorID, 'ErrorID should be FALSE when reset');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_ReadyFlag" Id="{a2222222-2222-2222-2222-222222222228}">
+      <Declaration><![CDATA[METHOD Test_ReadyFlag
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_ReadyFlag');
+
+// Test Ready flag can be set
+testAPI.Ready := TRUE;
+AssertTrue(testAPI.Ready, 'Ready should be TRUE when set');
+
+// Reset
+testAPI.Ready := FALSE;
+AssertFalse(testAPI.Ready, 'Ready should be FALSE when reset');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_EnabledFlag" Id="{a2222222-2222-2222-2222-222222222229}">
+      <Declaration><![CDATA[METHOD Test_EnabledFlag
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_EnabledFlag');
+
+// Test Enabled flag can be set
+testAPI.Enabled := TRUE;
+AssertTrue(testAPI.Enabled, 'Enabled should be TRUE when set');
+
+// Reset
+testAPI.Enabled := FALSE;
+AssertFalse(testAPI.Enabled, 'Enabled should be FALSE when reset');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_HomedFlag" Id="{a2222222-2222-2222-2222-22222222222a}">
+      <Declaration><![CDATA[METHOD Test_HomedFlag
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_HomedFlag');
+
+// Test Homed flag can be set
+testAPI.Homed := TRUE;
+AssertTrue(testAPI.Homed, 'Homed should be TRUE when set');
+
+// Reset
+testAPI.Homed := FALSE;
+AssertFalse(testAPI.Homed, 'Homed should be FALSE when reset');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_MovingFlag" Id="{a2222222-2222-2222-2222-22222222222b}">
+      <Declaration><![CDATA[METHOD Test_MovingFlag
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_MovingFlag');
+
+// Test Moving flag can be set
+testAPI.Moving := TRUE;
+AssertTrue(testAPI.Moving, 'Moving should be TRUE when set');
+
+// Reset
+testAPI.Moving := FALSE;
+AssertFalse(testAPI.Moving, 'Moving should be FALSE when reset');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_StateTransitions" Id="{a2222222-2222-2222-2222-22222222222c}">
+      <Declaration><![CDATA[METHOD Test_StateTransitions
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_StateTransitions');
+
+// Simulate typical state transition: Ready -> Busy -> Done
+testAPI.Ready := TRUE;
+AssertTrue(testAPI.Ready, 'Should be Ready initially');
+AssertFalse(testAPI.Busy, 'Should not be Busy initially');
+AssertFalse(testAPI.Done, 'Should not be Done initially');
+
+// Transition to Busy
+testAPI.Busy := TRUE;
+testAPI.Ready := FALSE;
+AssertFalse(testAPI.Ready, 'Should not be Ready when Busy');
+AssertTrue(testAPI.Busy, 'Should be Busy');
+AssertFalse(testAPI.Done, 'Should not be Done while Busy');
+
+// Transition to Done
+testAPI.Done := TRUE;
+testAPI.Busy := FALSE;
+AssertFalse(testAPI.Busy, 'Should not be Busy when Done');
+AssertTrue(testAPI.Done, 'Should be Done');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_ErrorState" Id="{a2222222-2222-2222-2222-22222222222d}">
+      <Declaration><![CDATA[METHOD Test_ErrorState
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_ErrorState');
+
+// Simulate error condition
+testAPI.Error := TRUE;
+testAPI.ErrorID := TRUE;
+testAPI.Busy := FALSE;
+testAPI.Done := FALSE;
+
+AssertTrue(testAPI.Error, 'Error should be TRUE');
+AssertTrue(testAPI.ErrorID, 'ErrorID should be TRUE');
+AssertFalse(testAPI.Done, 'Done should be FALSE in error state');
+AssertFalse(testAPI.Busy, 'Busy should be FALSE in error state');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_BusyToDone" Id="{a2222222-2222-2222-2222-22222222222e}">
+      <Declaration><![CDATA[METHOD Test_BusyToDone
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_BusyToDone');
+
+// Test transition from Busy to Done (should be mutually exclusive)
+testAPI.Busy := TRUE;
+testAPI.Done := FALSE;
+AssertTrue(testAPI.Busy, 'Should be Busy');
+AssertFalse(testAPI.Done, 'Done should be FALSE when Busy');
+
+// Complete operation
+testAPI.Busy := FALSE;
+testAPI.Done := TRUE;
+AssertFalse(testAPI.Busy, 'Busy should be FALSE when Done');
+AssertTrue(testAPI.Done, 'Should be Done');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_AllFlagsSet" Id="{a2222222-2222-2222-2222-22222222222f}">
+      <Declaration><![CDATA[METHOD Test_AllFlagsSet
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_AllFlagsSet');
+
+// Test that all flags can be set simultaneously (though not typical in practice)
+testAPI.Done := TRUE;
+testAPI.Busy := TRUE;
+testAPI.Error := TRUE;
+testAPI.ErrorID := TRUE;
+testAPI.Ready := TRUE;
+testAPI.Enabled := TRUE;
+testAPI.Homed := TRUE;
+testAPI.Moving := TRUE;
+
+AssertTrue(testAPI.Done, 'Done should be TRUE');
+AssertTrue(testAPI.Busy, 'Busy should be TRUE');
+AssertTrue(testAPI.Error, 'Error should be TRUE');
+AssertTrue(testAPI.ErrorID, 'ErrorID should be TRUE');
+AssertTrue(testAPI.Ready, 'Ready should be TRUE');
+AssertTrue(testAPI.Enabled, 'Enabled should be TRUE');
+AssertTrue(testAPI.Homed, 'Homed should be TRUE');
+AssertTrue(testAPI.Moving, 'Moving should be TRUE');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_ClearAllFlags" Id="{a2222222-2222-2222-2222-222222222230}">
+      <Declaration><![CDATA[METHOD Test_ClearAllFlags
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_ClearAllFlags');
+
+// Set all flags
+testAPI.Done := TRUE;
+testAPI.Busy := TRUE;
+testAPI.Error := TRUE;
+testAPI.ErrorID := TRUE;
+testAPI.Ready := TRUE;
+testAPI.Enabled := TRUE;
+testAPI.Homed := TRUE;
+testAPI.Moving := TRUE;
+
+// Clear all flags
+testAPI.Done := FALSE;
+testAPI.Busy := FALSE;
+testAPI.Error := FALSE;
+testAPI.ErrorID := FALSE;
+testAPI.Ready := FALSE;
+testAPI.Enabled := FALSE;
+testAPI.Homed := FALSE;
+testAPI.Moving := FALSE;
+
+// Verify all are cleared
+AssertFalse(testAPI.Done, 'Done should be FALSE');
+AssertFalse(testAPI.Busy, 'Busy should be FALSE');
+AssertFalse(testAPI.Error, 'Error should be FALSE');
+AssertFalse(testAPI.ErrorID, 'ErrorID should be FALSE');
+AssertFalse(testAPI.Ready, 'Ready should be FALSE');
+AssertFalse(testAPI.Enabled, 'Enabled should be FALSE');
+AssertFalse(testAPI.Homed, 'Homed should be FALSE');
+AssertFalse(testAPI.Moving, 'Moving should be FALSE');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

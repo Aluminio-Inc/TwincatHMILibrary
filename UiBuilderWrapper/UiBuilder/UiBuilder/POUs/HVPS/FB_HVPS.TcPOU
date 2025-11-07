@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_HVPS" Id="{67ddd066-03fd-42be-8807-cd57f0c77bda}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_HVPS EXTENDS FB_HMIBase
+VAR
+	hvps : REFERENCE TO FB_HVPS_System;
+	hvpsStatus : ARRAY[0..3] OF ST_HMIHvpsStatus;  // Status for all 4 supplies
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="ClearErrors" Id="{f7a2b3c4-d5e6-47f8-9a0b-1c2d3e4f5a6b}">
+      <Declaration><![CDATA[METHOD ClearErrors : BOOL
+VAR_INPUT
+	index : DINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Clear errors for specified supply
+hvps.ClearErrors(index);
+ClearErrors := TRUE;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Cyclic" Id="{71ec0170-2f44-46d1-ad14-592c83aae3f9}">
+      <Declaration><![CDATA[METHOD Cyclic
+VAR
+	i : DINT;
+	status : ARRAY[GC_HVPS.INDEX_SUPPLY_MIN..GC_HVPS.INDEX_SUPPLY_MAX] OF ST_PowerSupplyStatus;
+	index : DINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Sync status for each supply 
+
+FOR i := GC_HVPS.INDEX_SUPPLY_MIN TO GC_HVPS.INDEX_SUPPLY_MAX DO
+	status := hvps.P_supplies_status;
+	// Map HVPS-specific scalar status fields
+	hvpsStatus[i].HmiStatus.Enabled := status[i].ENABLED;
+	hvpsStatus[i].V_cur := status[i].VMON;
+	hvpsStatus[i].I_cur := status[i].IMON;
+	hvpsStatus[i].V_set := status[i].VSET;
+	hvpsStatus[i].I_set := status[i].ISET;
+
+	// Map base component status if reference is valid
+	IF __ISVALIDREF(status[i].BaseComponentStatus) THEN
+		hvpsStatus[i].HmiStatus.Busy := status[i].BaseComponentStatus.BaseStatus.Busy;
+		hvpsStatus[i].HmiStatus.Done := status[i].BaseComponentStatus.BaseStatus.Done;
+		hvpsStatus[i].HmiStatus.Error :=status[i].BaseComponentStatus.BaseStatus.Error;
+		hvpsStatus[i].HmiStatus.ErrorID := UDINT_TO_BYTE(status[i].BaseComponentStatus.BaseStatus.ErrorID);
+	END_IF
+
+	// Set error flag for HVPS-specific error conditions
+	IF status[i].OverVoltageSetpointError OR
+	   status[i].OverMaxVoltageError OR
+	   status[i].OverCurrentSetpointError OR
+	   status[i].OverMaxCurrentError THEN
+		hvpsStatus[i].HmiStatus.Error := TRUE;
+	END_IF
+END_FOR
+
+// Handle commands from base class
+IF cmd.Enable THEN
+	EnableHV(0);
+	cmd.Enable := FALSE;
+END_IF
+
+IF cmd.Disable THEN
+	DisableHV(0);
+	cmd.Disable := FALSE;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="DisableHV" Id="{1098e173-96c7-4796-a7f2-193ef63a02a9}">
+      <Declaration><![CDATA[METHOD DisableHV : BOOL
+VAR_INPUT
+	index : DINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Disable HV output for specified supply
+hvps.Disable_HV(index);
+DisableHV := TRUE;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="EnableHV" Id="{325e924a-2d47-4a43-b44c-a3a640a61791}">
+      <Declaration><![CDATA[METHOD EnableHV : BOOL
+VAR_INPUT
+	index : DINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Enable HV output for specified supply
+hvps.Enable_HV(index);
+EnableHV := TRUE;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FullShutdown" Id="{a1b2c3d4-e5f6-4789-0abc-def123456789}">
+      <Declaration><![CDATA[METHOD FullShutdown : BOOL
+VAR
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Emergency shutdown of all supplies
+hvps.FullShutDown();
+FullShutdown := TRUE;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetSupplyStatus" Id="{e814ad49-555a-4e3e-afa8-48c2e8afba49}">
+      <Declaration><![CDATA[METHOD GetSupplyStatus : ST_HMIHvpsStatus
+VAR_INPUT
+	index : DINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Return status for specified supply
+IF index >= 0 AND index <= 3 THEN
+	GetSupplyStatus := hvpsStatus[index];
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Init" Id="{a53bc3e6-3670-4569-bfd0-dbbd953f4edc}">
+      <Declaration><![CDATA[METHOD Init : BOOL
+VAR_INPUT
+	refHVPS : REFERENCE TO FB_HVPS_System;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[hvps REF= refHVPS;
+Init := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="P_AllSupplyStatus" Id="{b2c3d4e5-f6a7-4890-bcde-f012345678ab}">
+      <Declaration><![CDATA[// Property to access status of all 4 supplies
+PROPERTY P_AllSupplyStatus : REFERENCE TO ARRAY[0..3] OF ST_HMIHvpsStatus]]></Declaration>
+      <Get Name="Get" Id="{c3d4e5f6-a789-4901-cdef-0123456789bc}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[P_AllSupplyStatus REF= hvpsStatus;
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="PowerOff" Id="{6f82d71a-8278-47c0-b837-4668c1bdeb51}">
+      <Declaration><![CDATA[METHOD PowerOff : BOOL
+VAR_INPUT
+	index : DINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Turn off input power to specified supply
+hvps.InputPowerOff(index);
+PowerOff := TRUE;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="PowerOn" Id="{b234f18f-74f1-481d-91df-a10bda785615}">
+      <Declaration><![CDATA[METHOD PowerOn : BOOL
+VAR_INPUT
+	index : DINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Turn on input power to specified supply
+hvps.InputPowerOn(index);
+PowerOn := TRUE;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetCurrent" Id="{f6ad2c9c-021f-470f-93d0-10c1bf54c683}">
+      <Declaration><![CDATA[METHOD SetCurrent : BOOL
+VAR_INPUT
+	setpoint : LREAL;  // mA
+	index : DINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Set current setpoint for specified supply
+hvps.SetCurrent(setpoint, index);
+SetCurrent := TRUE;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="SetVoltage" Id="{eeff0e70-6255-427e-8a66-154b19c8c1bc}">
+      <Declaration><![CDATA[METHOD SetVoltage : BOOL
+VAR_INPUT
+	setpoint : LREAL;  // V
+	index : DINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Set voltage setpoint for specified supply
+hvps.SetVoltage(setpoint, index);
+SetVoltage := TRUE;
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

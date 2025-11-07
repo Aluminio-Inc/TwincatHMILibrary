@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_HMICommand" Id="{4172bd96-a52d-4d35-803e-e5ee391ef718}">
+    <Declaration><![CDATA[TYPE ST_HMICommand :
+STRUCT
+	Enable	: BOOL;
+	Disable	: BOOL;
+	Reset	: BOOL;
+	Stop	: BOOL;
+	Trigger	: BOOL;
+	Error	: BYTE;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_HMIBase" Id="{fa2c6f0a-b3ec-4ab4-a3a8-84ee08d4297f}">
+    <Declaration><![CDATA[INTERFACE I_HMIBase EXTENDS	Base.I_BaseCyclic
+
+
+]]></Declaration>
+    <Property Name="P_BaseConfiguration" Id="{0f638a4b-a0b4-422e-8d0b-f9a15f85558e}">
+      <Declaration><![CDATA[PROPERTY P_BaseConfiguration : REFERENCE TO ST_BaseConfiguration]]></Declaration>
+      <Get Name="Get" Id="{5010c0d8-f53e-496c-92ab-2ecaad598f06}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="P_BaseStatus" Id="{79051e6c-3bcf-465f-9dc4-8f7b3214282f}">
+      <Declaration><![CDATA[PROPERTY P_BaseStatus : REFERENCE TO ST_BaseStatus]]></Declaration>
+      <Get Name="Get" Id="{2ce5823d-012d-4729-8c36-1fbed4e87f02}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{ca104efe-1d79-4983-9fd3-f730833b67e1}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+    <Property Name="P_Command" Id="{9e6b1522-aff4-4b9e-ba8b-d9b6680509fe}">
+      <Declaration><![CDATA[PROPERTY P_Command : REFERENCE TO ST_HMICommand]]></Declaration>
+      <Get Name="Get" Id="{ce938aff-42b5-41df-b89d-8680dd8f6d0c}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{8659c5ed-4ef9-4b0a-a5a3-a11ec8741c6e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+      </Set>
+    </Property>
+  </Itf>
+</TcPlcObject>

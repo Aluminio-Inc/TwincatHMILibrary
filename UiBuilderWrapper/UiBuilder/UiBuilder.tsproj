@@ -1,0 +1,221 @@
+<?xml version="1.0"?>
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4026.19">
+	<DataTypes>
+		<DataType>
+			<Name GUID="{A8A15EC9-BCD7-21D0-0F8E-A1EB3CC7D44C}" Namespace="Base" AutoDeleteType="true">ST_EtherCATWcState</Name>
+			<BitSize>8</BitSize>
+			<SubItem>
+				<Name>WcState</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>InputToggle</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{18071995-0000-0000-0000-000000000041}" TcBaseType="true" HideSubItems="true" CName="AmsNetId">AMSNETID</Name>
+			<BitSize>48</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>6</Elements>
+			</ArrayInfo>
+			<Format>
+				<Printf>%d.%d.%d.%d.%d.%d</Printf>
+				<Parameter>[0]</Parameter>
+				<Parameter>[1]</Parameter>
+				<Parameter>[2]</Parameter>
+				<Parameter>[3]</Parameter>
+				<Parameter>[4]</Parameter>
+				<Parameter>[5]</Parameter>
+			</Format>
+		</DataType>
+		<DataType>
+			<Name GUID="{F7003B56-064B-DB36-550D-43B8B08390E6}" Namespace="Base" AutoDeleteType="true">ST_EtherCATAdsAddr</Name>
+			<Comment><![CDATA[Complete ADS address to access the slave (mailbox)]]></Comment>
+			<BitSize>64</BitSize>
+			<SubItem>
+				<Name>netId</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000041}">AMSNETID</Type>
+				<BitSize>48</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>port</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000004}">WORD</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>48</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{A140EA06-279A-EE9E-7163-59A9AE20925B}" Namespace="Base" AutoDeleteType="true">ST_EtherCATInfoData</Name>
+			<BitSize>80</BitSize>
+			<SubItem>
+				<Name>State</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
+				<Comment><![CDATA[ Same Size as Control.ST_EtherCATState Can use MEMCPY into structure]]></Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>AdsAddr</Name>
+				<Type GUID="{F7003B56-064B-DB36-550D-43B8B08390E6}" Namespace="Base">ST_EtherCATAdsAddr</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>16</BitOffs>
+			</SubItem>
+		</DataType>
+	</DataTypes>
+	<Project ProjectGUID="{36A6AF35-597E-47A2-BA45-FFF762361260}" Target64Bit="true" ShowHideConfigurations="#x6">
+		<System>
+			<Settings MaxCpus="4" NonWinCpus="2">
+				<Cpu CpuId="2"/>
+			</Settings>
+			<Tasks>
+				<Task Id="3" Priority="20" CycleTime="100000" AmsPort="350" AdtTasks="true">
+					<Name>PlcTask</Name>
+				</Task>
+			</Tasks>
+		</System>
+		<Plc>
+			<Project GUID="{C56391AA-13E8-4774-BF68-7C76B2D6FD62}" Name="UiBuilder" PrjFilePath="UiBuilder\UiBuilder.plcproj" TmcFilePath="UiBuilder\UiBuilder.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{61C6FFB3-3C49-16E6-B41A-07169867A164}" TmcPath="UiBuilder\UiBuilder.tmc">
+					<Name>UiBuilder Instance</Name>
+					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+					<Vars VarGrpType="2" AreaNo="1">
+						<Name>PlcTask Outputs</Name>
+						<Var>
+							<Name>PRG_TEST.fbBinaryDeviceTest.mockElectrostatic.DiscreteComponentStatus.PrimaryOutput</Name>
+							<Comment><![CDATA[ ie., Vaccum]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>PRG_TEST.fbBinaryDeviceTest.mockElectrostatic.DiscreteComponentStatus.SecondaryOutput</Name>
+							<Comment><![CDATA[ ie., Purge]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>PRG_TEST.fbHVPSTest.mockHVPSSystem.PowerSupplies[0].DeanStatus.VSET_to_plc</Name>
+							<Comment><![CDATA[ Controls mapped to PLC terminals]]></Comment>
+							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>PRG_TEST.fbHVPSTest.mockHVPSSystem.PowerSupplies[0].DeanStatus.ISET_to_plc</Name>
+							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>PRG_TEST.fbHVPSTest.mockHVPSSystem.PowerSupplies[0].DeanStatus.VREF_to_plc</Name>
+							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>PRG_TEST.fbHVPSTest.mockHVPSSystem.PowerSupplies[0].DeanStatus.POWERED</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>PRG_TEST.fbHVPSTest.mockHVPSSystem.PowerSupplies[0].DeanStatus.ENABLED</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>PRG_TEST.fbHVPSTest.mockHVPSSystem.PowerSupplies[1].DeanStatus.VSET_to_plc</Name>
+							<Comment><![CDATA[ Controls mapped to PLC terminals]]></Comment>
+							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>PRG_TEST.fbHVPSTest.mockHVPSSystem.PowerSupplies[1].DeanStatus.ISET_to_plc</Name>
+							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>PRG_TEST.fbHVPSTest.mockHVPSSystem.PowerSupplies[1].DeanStatus.VREF_to_plc</Name>
+							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>PRG_TEST.fbHVPSTest.mockHVPSSystem.PowerSupplies[1].DeanStatus.POWERED</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>PRG_TEST.fbHVPSTest.mockHVPSSystem.PowerSupplies[1].DeanStatus.ENABLED</Name>
+							<Type>BOOL</Type>
+						</Var>
+					</Vars>
+					<Vars VarGrpType="1">
+						<Name>PlcTask Inputs</Name>
+						<Var>
+							<Name>PRG_TEST.fbBinaryDeviceTest.mockElectrostatic.ComponentStatus.EtherCATStatus.WcState</Name>
+							<Comment><![CDATA[ Link to hardware]]></Comment>
+							<Type GUID="{A8A15EC9-BCD7-21D0-0F8E-A1EB3CC7D44C}" Namespace="Base">ST_EtherCATWcState</Type>
+						</Var>
+						<Var>
+							<Name>PRG_TEST.fbBinaryDeviceTest.mockElectrostatic.ComponentStatus.EtherCATStatus.InfoData</Name>
+							<Comment><![CDATA[ Link to hardware]]></Comment>
+							<Type GUID="{A140EA06-279A-EE9E-7163-59A9AE20925B}" Namespace="Base">ST_EtherCATInfoData</Type>
+						</Var>
+						<Var>
+							<Name>PRG_TEST.fbVisionTest.mockVision.ComponentStatus.EtherCATStatus.WcState</Name>
+							<Comment><![CDATA[ Link to hardware]]></Comment>
+							<Type GUID="{A8A15EC9-BCD7-21D0-0F8E-A1EB3CC7D44C}" Namespace="Base">ST_EtherCATWcState</Type>
+						</Var>
+						<Var>
+							<Name>PRG_TEST.fbVisionTest.mockVision.ComponentStatus.EtherCATStatus.InfoData</Name>
+							<Comment><![CDATA[ Link to hardware]]></Comment>
+							<Type GUID="{A140EA06-279A-EE9E-7163-59A9AE20925B}" Namespace="Base">ST_EtherCATInfoData</Type>
+						</Var>
+						<Var>
+							<Name>PRG_TEST.fbHVPSTest.mockHVPSSystem.PowerSupplies[0].ComponentStatus.EtherCATStatus.WcState</Name>
+							<Comment><![CDATA[ Link to hardware]]></Comment>
+							<Type GUID="{A8A15EC9-BCD7-21D0-0F8E-A1EB3CC7D44C}" Namespace="Base">ST_EtherCATWcState</Type>
+						</Var>
+						<Var>
+							<Name>PRG_TEST.fbHVPSTest.mockHVPSSystem.PowerSupplies[0].ComponentStatus.EtherCATStatus.InfoData</Name>
+							<Comment><![CDATA[ Link to hardware]]></Comment>
+							<Type GUID="{A140EA06-279A-EE9E-7163-59A9AE20925B}" Namespace="Base">ST_EtherCATInfoData</Type>
+						</Var>
+						<Var>
+							<Name>PRG_TEST.fbHVPSTest.mockHVPSSystem.PowerSupplies[0].DeanStatus.VMON_from_plc</Name>
+							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>PRG_TEST.fbHVPSTest.mockHVPSSystem.PowerSupplies[0].DeanStatus.IMON_from_plc</Name>
+							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>PRG_TEST.fbHVPSTest.mockHVPSSystem.PowerSupplies[1].ComponentStatus.EtherCATStatus.WcState</Name>
+							<Comment><![CDATA[ Link to hardware]]></Comment>
+							<Type GUID="{A8A15EC9-BCD7-21D0-0F8E-A1EB3CC7D44C}" Namespace="Base">ST_EtherCATWcState</Type>
+						</Var>
+						<Var>
+							<Name>PRG_TEST.fbHVPSTest.mockHVPSSystem.PowerSupplies[1].ComponentStatus.EtherCATStatus.InfoData</Name>
+							<Comment><![CDATA[ Link to hardware]]></Comment>
+							<Type GUID="{A140EA06-279A-EE9E-7163-59A9AE20925B}" Namespace="Base">ST_EtherCATInfoData</Type>
+						</Var>
+						<Var>
+							<Name>PRG_TEST.fbHVPSTest.mockHVPSSystem.PowerSupplies[1].DeanStatus.VMON_from_plc</Name>
+							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>PRG_TEST.fbHVPSTest.mockHVPSSystem.PowerSupplies[1].DeanStatus.IMON_from_plc</Name>
+							<Type>INT</Type>
+						</Var>
+					</Vars>
+					<Contexts>
+						<Context>
+							<Id>0</Id>
+							<Name>PlcTask</Name>
+							<ManualConfig>
+								<OTCID>#x02010030</OTCID>
+							</ManualConfig>
+							<Priority>20</Priority>
+							<CycleTime>10000000</CycleTime>
+						</Context>
+					</Contexts>
+					<TaskPouOids>
+						<TaskPouOid Prio="20" OTCID="#x08502001"/>
+					</TaskPouOids>
+				</Instance>
+			</Project>
+		</Plc>
+	</Project>
+</TcSmProject>

@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_BinaryDevice" Id="{1f2462be-444f-471b-ae3d-f444ab9627ba}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_BinaryDevice EXTENDS FB_HMIBase
+VAR
+	binary : Discrete.I_DiscreteBase;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Cyclic" Id="{1c7bbb0e-cba7-43ac-bb5d-4c2b907180fc}">
+      <Declaration><![CDATA[METHOD Cyclic
+VAR
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Sync status from device to HMI
+status.HmiStatus.Busy := binary.P_DiscreteStatus.ComponentStatus.BaseStatus.Busy;
+status.HmiStatus.Done := binary.P_DiscreteStatus.ComponentStatus.BaseStatus.Done;
+status.HmiStatus.Error := binary.P_DiscreteStatus.ComponentStatus.BaseStatus.Error;
+
+// Map discrete state to Enabled flag
+status.HmiStatus.Enabled := (binary.P_DiscreteStatus.BinaryComponentState = Discrete.E_DiscreteComponentState.Active);
+
+// Handle commands from Vue.js
+IF cmd.Enable THEN
+	binary.Activate();
+	cmd.Enable := FALSE;
+END_IF
+
+IF cmd.Disable THEN
+	binary.Deactivate();
+	cmd.Disable := FALSE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Init" Id="{6885a98e-288a-434d-ba1e-96376fb179a6}">
+      <Declaration><![CDATA[METHOD Init : BOOL
+VAR_INPUT
+	refBinary : Discrete.I_DiscreteBase;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[binary := refBinary;
+Init := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

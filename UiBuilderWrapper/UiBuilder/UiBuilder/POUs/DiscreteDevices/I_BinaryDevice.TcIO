@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_BinaryDevice" Id="{23f75292-a9cd-4826-8fd6-29dab4d849ea}">
+    <Declaration><![CDATA[INTERFACE I_BinaryDevice EXTENDS I_HMIBase
+]]></Declaration>
+  </Itf>
+</TcPlcObject>

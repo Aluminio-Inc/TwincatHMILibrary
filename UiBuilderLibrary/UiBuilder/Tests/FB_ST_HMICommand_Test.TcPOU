@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_ST_HMICommand_Test" Id="{a1111111-1111-1111-1111-111111111111}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ST_HMICommand_Test EXTENDS TcUnit.FB_TestSuite
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	testCommand : ST_HMICommand;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Test runner - call all test methods
+Test_InitialState();
+Test_EnableCommand();
+Test_DisableCommand();
+Test_HomeCommand();
+Test_ResetCommand();
+Test_StopCommand();
+Test_TriggerCommand();
+Test_ErrorCode();
+Test_MultipleCommands();
+Test_ClearCommands();
+]]></ST>
+    </Implementation>
+    <Method Name="Test_InitialState" Id="{a1111111-1111-1111-1111-111111111112}">
+      <Declaration><![CDATA[METHOD Test_InitialState
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_InitialState');
+
+// Test that all command flags are initially FALSE
+testCommand.Enable := FALSE;
+testCommand.Disable := FALSE;
+testCommand.Home := FALSE;
+testCommand.Reset := FALSE;
+testCommand.Stop := FALSE;
+testCommand.Trigger := FALSE;
+testCommand.Error := 0;
+
+AssertFalse(testCommand.Enable, 'Enable should be FALSE initially');
+AssertFalse(testCommand.Disable, 'Disable should be FALSE initially');
+AssertFalse(testCommand.Home, 'Home should be FALSE initially');
+AssertFalse(testCommand.Reset, 'Reset should be FALSE initially');
+AssertFalse(testCommand.Stop, 'Stop should be FALSE initially');
+AssertFalse(testCommand.Trigger, 'Trigger should be FALSE initially');
+AssertEquals_BYTE(0, testCommand.Error, 'Error should be 0 initially');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_EnableCommand" Id="{a1111111-1111-1111-1111-111111111113}">
+      <Declaration><![CDATA[METHOD Test_EnableCommand
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_EnableCommand');
+
+// Test Enable command can be set
+testCommand.Enable := TRUE;
+AssertTrue(testCommand.Enable, 'Enable should be TRUE when set');
+
+// Reset
+testCommand.Enable := FALSE;
+AssertFalse(testCommand.Enable, 'Enable should be FALSE when reset');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_DisableCommand" Id="{a1111111-1111-1111-1111-111111111114}">
+      <Declaration><![CDATA[METHOD Test_DisableCommand
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_DisableCommand');
+
+// Test Disable command can be set
+testCommand.Disable := TRUE;
+AssertTrue(testCommand.Disable, 'Disable should be TRUE when set');
+
+// Reset
+testCommand.Disable := FALSE;
+AssertFalse(testCommand.Disable, 'Disable should be FALSE when reset');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_HomeCommand" Id="{a1111111-1111-1111-1111-111111111115}">
+      <Declaration><![CDATA[METHOD Test_HomeCommand
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_HomeCommand');
+
+// Test Home command can be set
+testCommand.Home := TRUE;
+AssertTrue(testCommand.Home, 'Home should be TRUE when set');
+
+// Reset
+testCommand.Home := FALSE;
+AssertFalse(testCommand.Home, 'Home should be FALSE when reset');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_ResetCommand" Id="{a1111111-1111-1111-1111-111111111116}">
+      <Declaration><![CDATA[METHOD Test_ResetCommand
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_ResetCommand');
+
+// Test Reset command can be set
+testCommand.Reset := TRUE;
+AssertTrue(testCommand.Reset, 'Reset should be TRUE when set');
+
+// Reset
+testCommand.Reset := FALSE;
+AssertFalse(testCommand.Reset, 'Reset should be FALSE when reset');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_StopCommand" Id="{a1111111-1111-1111-1111-111111111117}">
+      <Declaration><![CDATA[METHOD Test_StopCommand
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_StopCommand');
+
+// Test Stop command can be set
+testCommand.Stop := TRUE;
+AssertTrue(testCommand.Stop, 'Stop should be TRUE when set');
+
+// Reset
+testCommand.Stop := FALSE;
+AssertFalse(testCommand.Stop, 'Stop should be FALSE when reset');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_TriggerCommand" Id="{a1111111-1111-1111-1111-111111111118}">
+      <Declaration><![CDATA[METHOD Test_TriggerCommand
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_TriggerCommand');
+
+// Test Trigger command can be set
+testCommand.Trigger := TRUE;
+AssertTrue(testCommand.Trigger, 'Trigger should be TRUE when set');
+
+// Reset
+testCommand.Trigger := FALSE;
+AssertFalse(testCommand.Trigger, 'Trigger should be FALSE when reset');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_ErrorCode" Id="{a1111111-1111-1111-1111-111111111119}">
+      <Declaration><![CDATA[METHOD Test_ErrorCode
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_ErrorCode');
+
+// Test Error code can be set to various values
+testCommand.Error := 0;
+AssertEquals_BYTE(0, testCommand.Error, 'Error should be 0');
+
+testCommand.Error := 1;
+AssertEquals_BYTE(1, testCommand.Error, 'Error should be 1');
+
+testCommand.Error := 255;
+AssertEquals_BYTE(255, testCommand.Error, 'Error should be 255');
+
+testCommand.Error := 128;
+AssertEquals_BYTE(128, testCommand.Error, 'Error should be 128');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_MultipleCommands" Id="{a1111111-1111-1111-1111-11111111111a}">
+      <Declaration><![CDATA[METHOD Test_MultipleCommands
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_MultipleCommands');
+
+// Test multiple commands can be set simultaneously
+testCommand.Enable := TRUE;
+testCommand.Home := TRUE;
+testCommand.Trigger := TRUE;
+
+AssertTrue(testCommand.Enable, 'Enable should be TRUE');
+AssertTrue(testCommand.Home, 'Home should be TRUE');
+AssertTrue(testCommand.Trigger, 'Trigger should be TRUE');
+AssertFalse(testCommand.Disable, 'Disable should remain FALSE');
+AssertFalse(testCommand.Stop, 'Stop should remain FALSE');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_ClearCommands" Id="{a1111111-1111-1111-1111-11111111111b}">
+      <Declaration><![CDATA[METHOD Test_ClearCommands
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_ClearCommands');
+
+// Set all commands
+testCommand.Enable := TRUE;
+testCommand.Disable := TRUE;
+testCommand.Home := TRUE;
+testCommand.Reset := TRUE;
+testCommand.Stop := TRUE;
+testCommand.Trigger := TRUE;
+testCommand.Error := 42;
+
+// Clear all commands
+testCommand.Enable := FALSE;
+testCommand.Disable := FALSE;
+testCommand.Home := FALSE;
+testCommand.Reset := FALSE;
+testCommand.Stop := FALSE;
+testCommand.Trigger := FALSE;
+testCommand.Error := 0;
+
+// Verify all are cleared
+AssertFalse(testCommand.Enable, 'Enable should be FALSE');
+AssertFalse(testCommand.Disable, 'Disable should be FALSE');
+AssertFalse(testCommand.Home, 'Home should be FALSE');
+AssertFalse(testCommand.Reset, 'Reset should be FALSE');
+AssertFalse(testCommand.Stop, 'Stop should be FALSE');
+AssertFalse(testCommand.Trigger, 'Trigger should be FALSE');
+AssertEquals_BYTE(0, testCommand.Error, 'Error should be 0');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

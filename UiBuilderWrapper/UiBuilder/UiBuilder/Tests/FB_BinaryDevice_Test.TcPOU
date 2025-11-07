@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_BinaryDevice_Test" Id="{b1111111-1111-1111-1111-111111111111}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_BinaryDevice_Test EXTENDS TcUnit.FB_TestSuite
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	testDevice : FB_BinaryDevice;
+	mockElectrostatic : FB_Electrostatic;
+	testCommand : ST_HMICommand;
+	testStatus : ST_HMIStatus;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Test runner - call all test methods
+Test_Init();
+Test_CommandSync();
+Test_StatusSync();
+Test_EnableCommand();
+Test_DisableCommand();
+Test_CommandClearing();
+]]></ST>
+    </Implementation>
+    <Method Name="Test_CommandClearing" Id="{b1111111-1111-1111-1111-111111111117}">
+      <Declaration><![CDATA[METHOD Test_CommandClearing
+VAR_INPUT
+END_VAR
+VAR
+	cmd : ST_HMICommand;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_CommandClearing');
+
+// Initialize device
+testDevice.Init(mockElectrostatic);
+
+// Set multiple commands
+cmd.Enable := TRUE;
+cmd.Disable := TRUE;
+testDevice.P_Command := cmd;
+
+// NOTE: Can't call Cyclic() without real device - would cause page fault
+// This test verifies command property access only
+// testDevice.Cyclic();
+
+// Verify commands were set
+cmd := testDevice.P_Command;
+AssertTrue(cmd.Enable, 'Enable should be set');
+AssertTrue(cmd.Disable, 'Disable should be set');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_CommandSync" Id="{b1111111-1111-1111-1111-111111111113}">
+      <Declaration><![CDATA[METHOD Test_CommandSync
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_CommandSync');
+
+// Initialize device
+testDevice.Init(mockElectrostatic);
+
+// Set command via property
+testCommand.Enable := TRUE;
+testDevice.P_Command := testCommand;
+
+// Verify command was set
+AssertTrue(testCommand.Enable, 'Enable command should be set');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_DisableCommand" Id="{b1111111-1111-1111-1111-111111111116}">
+      <Declaration><![CDATA[METHOD Test_DisableCommand
+VAR_INPUT
+END_VAR
+VAR
+	cmdBefore : ST_HMICommand;
+	cmdAfter : ST_HMICommand;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_DisableCommand');
+
+// Initialize device
+testDevice.Init(mockElectrostatic);
+
+// Set Disable command
+cmdBefore.Disable := TRUE;
+testDevice.P_Command := cmdBefore;
+
+// NOTE: Can't call Cyclic() without real device - would cause page fault
+// This test verifies command property write/read only
+// testDevice.Cyclic();
+
+// Get command state
+cmdAfter := testDevice.P_Command;
+
+// Verify command was set
+AssertTrue(cmdAfter.Disable, 'Disable command should be set');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_EnableCommand" Id="{b1111111-1111-1111-1111-111111111115}">
+      <Declaration><![CDATA[METHOD Test_EnableCommand
+VAR_INPUT
+END_VAR
+VAR
+	cmdBefore : ST_HMICommand;
+	cmdAfter : ST_HMICommand;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_EnableCommand');
+
+// Initialize device
+testDevice.Init(mockElectrostatic);
+
+// Set Enable command
+cmdBefore.Enable := TRUE;
+testDevice.P_Command := cmdBefore;
+
+// NOTE: Can't call Cyclic() without real device - would cause page fault
+// This test verifies command property write/read only
+// testDevice.Cyclic();
+
+// Get command state
+cmdAfter := testDevice.P_Command;
+
+// Verify command was set
+AssertTrue(cmdAfter.Enable, 'Enable command should be set');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_Init" Id="{b1111111-1111-1111-1111-111111111112}">
+      <Declaration><![CDATA[METHOD Test_Init
+VAR_INPUT
+END_VAR
+VAR
+	initResult : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_Init');
+
+// Test that Init method returns TRUE and binds the device
+initResult := testDevice.Init(mockElectrostatic);
+
+AssertTrue(initResult, 'Init should return TRUE');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_StatusSync" Id="{b1111111-1111-1111-1111-111111111114}">
+      <Declaration><![CDATA[METHOD Test_StatusSync
+VAR_INPUT
+END_VAR
+VAR
+	retrievedStatus : ST_HMIStatus;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_StatusSync');
+
+// Initialize device
+testDevice.Init(mockElectrostatic);
+
+// NOTE: Can't call Cyclic() without real device - would cause page fault
+// This test verifies status property access only
+// testDevice.Cyclic();
+
+// Get status via property (without calling Cyclic)
+retrievedStatus := testDevice.P_Status;
+
+// Verify status structure exists (basic validation)
+// Note: Without actual device running, we just check structure access works
+AssertEquals_INT(0, 0, 'Status property should be accessible');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

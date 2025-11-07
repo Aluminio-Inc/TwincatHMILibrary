@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir \"C:\\Users\\tsion\\Documents\\GitHub\\UiBuilderLibrary\\UiBuilder\")",
+      "Bash(dir \"C:\\Users\\tsion\\Documents\\GitHub\\UiBuilderLibrary\\UiBuilder\\ITFs\")",
+      "Bash(dir \"C:\\Users\\tsion\\Documents\\GitHub\\UiBuilderLibrary\\UiBuilder\\VISUs\")",
+      "Bash(tree:*)",
+      "Bash(mkdir:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

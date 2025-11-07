@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_ST_HMIStatus_Test" Id="{a3333333-3333-3333-3333-333333333333}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ST_HMIStatus_Test EXTENDS TcUnit.FB_TestSuite
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	testStatus : ST_HMIStatus;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Test runner - call all test methods
+Test_InitialState();
+Test_HmiStatusAccess();
+Test_HmiStatusFlags();
+Test_HmiStatusStateTransitions();
+]]></ST>
+    </Implementation>
+    <Method Name="Test_InitialState" Id="{a3333333-3333-3333-3333-333333333334}">
+      <Declaration><![CDATA[METHOD Test_InitialState
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_InitialState');
+
+// Initialize HmiStatus structure
+testStatus.HmiStatus.Done := FALSE;
+testStatus.HmiStatus.Busy := FALSE;
+testStatus.HmiStatus.Error := FALSE;
+testStatus.HmiStatus.ErrorID := FALSE;
+testStatus.HmiStatus.Ready := FALSE;
+testStatus.HmiStatus.Enabled := FALSE;
+testStatus.HmiStatus.Homed := FALSE;
+testStatus.HmiStatus.Moving := FALSE;
+
+// Verify initial state of HmiStatus member
+AssertFalse(testStatus.HmiStatus.Done, 'HmiStatus.Done should be FALSE initially');
+AssertFalse(testStatus.HmiStatus.Busy, 'HmiStatus.Busy should be FALSE initially');
+AssertFalse(testStatus.HmiStatus.Error, 'HmiStatus.Error should be FALSE initially');
+AssertFalse(testStatus.HmiStatus.ErrorID, 'HmiStatus.ErrorID should be FALSE initially');
+AssertFalse(testStatus.HmiStatus.Ready, 'HmiStatus.Ready should be FALSE initially');
+AssertFalse(testStatus.HmiStatus.Enabled, 'HmiStatus.Enabled should be FALSE initially');
+AssertFalse(testStatus.HmiStatus.Homed, 'HmiStatus.Homed should be FALSE initially');
+AssertFalse(testStatus.HmiStatus.Moving, 'HmiStatus.Moving should be FALSE initially');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_HmiStatusAccess" Id="{a3333333-3333-3333-3333-333333333335}">
+      <Declaration><![CDATA[METHOD Test_HmiStatusAccess
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_HmiStatusAccess');
+
+// Test that HmiStatus member can be accessed and modified
+testStatus.HmiStatus.Ready := TRUE;
+AssertTrue(testStatus.HmiStatus.Ready, 'HmiStatus.Ready should be accessible and settable');
+
+testStatus.HmiStatus.Enabled := TRUE;
+AssertTrue(testStatus.HmiStatus.Enabled, 'HmiStatus.Enabled should be accessible and settable');
+
+testStatus.HmiStatus.Homed := TRUE;
+AssertTrue(testStatus.HmiStatus.Homed, 'HmiStatus.Homed should be accessible and settable');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_HmiStatusFlags" Id="{a3333333-3333-3333-3333-333333333336}">
+      <Declaration><![CDATA[METHOD Test_HmiStatusFlags
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_HmiStatusFlags');
+
+// Test all HmiStatus flags can be set independently
+testStatus.HmiStatus.Done := TRUE;
+testStatus.HmiStatus.Busy := FALSE;
+testStatus.HmiStatus.Error := FALSE;
+
+AssertTrue(testStatus.HmiStatus.Done, 'Done flag should be TRUE');
+AssertFalse(testStatus.HmiStatus.Busy, 'Busy flag should be FALSE');
+AssertFalse(testStatus.HmiStatus.Error, 'Error flag should be FALSE');
+
+// Change state
+testStatus.HmiStatus.Done := FALSE;
+testStatus.HmiStatus.Busy := TRUE;
+
+AssertFalse(testStatus.HmiStatus.Done, 'Done flag should be FALSE');
+AssertTrue(testStatus.HmiStatus.Busy, 'Busy flag should be TRUE');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Test_HmiStatusStateTransitions" Id="{a3333333-3333-3333-3333-333333333337}">
+      <Declaration><![CDATA[METHOD Test_HmiStatusStateTransitions
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('Test_HmiStatusStateTransitions');
+
+// Test typical state machine transitions through HmiStatus
+// Initial state: Ready
+testStatus.HmiStatus.Ready := TRUE;
+testStatus.HmiStatus.Enabled := FALSE;
+testStatus.HmiStatus.Busy := FALSE;
+testStatus.HmiStatus.Done := FALSE;
+
+AssertTrue(testStatus.HmiStatus.Ready, 'Should be Ready initially');
+
+// Enabled state
+testStatus.HmiStatus.Enabled := TRUE;
+AssertTrue(testStatus.HmiStatus.Enabled, 'Should be Enabled');
+AssertTrue(testStatus.HmiStatus.Ready, 'Should remain Ready when Enabled');
+
+// Busy executing
+testStatus.HmiStatus.Busy := TRUE;
+testStatus.HmiStatus.Done := FALSE;
+AssertTrue(testStatus.HmiStatus.Busy, 'Should be Busy');
+AssertFalse(testStatus.HmiStatus.Done, 'Should not be Done while Busy');
+
+// Completed
+testStatus.HmiStatus.Busy := FALSE;
+testStatus.HmiStatus.Done := TRUE;
+AssertFalse(testStatus.HmiStatus.Busy, 'Should not be Busy when Done');
+AssertTrue(testStatus.HmiStatus.Done, 'Should be Done');
+
+TEST_FINISHED();
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

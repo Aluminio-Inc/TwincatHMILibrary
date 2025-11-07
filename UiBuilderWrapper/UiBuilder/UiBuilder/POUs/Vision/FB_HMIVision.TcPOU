@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_HMIVision" Id="{b76f3680-5def-4f09-9741-0aa6629d1724}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_HMIVision EXTENDS FB_HMIBase
+VAR
+	vision : REFERENCE TO FB_ADSVision;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Cyclic" Id="{b43f8de0-78fb-4076-b614-792224a68729}">
+      <Declaration><![CDATA[METHOD Cyclic
+VAR
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Sync status from vision to HMI
+status.HmiStatus.Busy := vision.Busy;
+status.HmiStatus.Done := vision.P_HandshakeStatus.ResultsReceived;
+status.HmiStatus.Error := vision.Error;
+status.HmiStatus.ErrorID := vision.P_HandshakeStatus.VisionResult.ResultCode;
+
+// Handle commands from Vue.js
+IF cmd.Trigger THEN
+	vision.Trigger();
+	cmd.Trigger := FALSE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Init" Id="{8bbbca94-fa6c-4c61-9d57-8f6dfd6db76f}">
+      <Declaration><![CDATA[METHOD Init : BOOL
+VAR_INPUT
+	refVision : REFERENCE TO FB_ADSVision;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[vision REF= refVision;]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

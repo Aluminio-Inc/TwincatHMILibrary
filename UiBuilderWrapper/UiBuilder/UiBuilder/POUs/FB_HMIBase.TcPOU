@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_HMIBase" Id="{cccc0bf6-9b64-42bd-b0ca-ff96aa8733e1}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_HMIBase
+VAR
+	status : ST_HMIStatus;
+	configs : ST_HMIConfiguration;
+	cmd : ST_HMICommand;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="P_Command" Id="{38295d4b-cf4d-4043-84fe-a4c04f115626}">
+      <Declaration><![CDATA[PROPERTY P_Command : ST_HMICommand]]></Declaration>
+      <Get Name="Get" Id="{9b131594-f8fe-44c4-8bf9-083acf6f22cc}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[P_Command := cmd;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{b2d54d4d-2213-4994-9d02-523a074ae486}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[cmd := P_Command;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="P_Configuration" Id="{31ae0e68-4b5e-42f8-9f49-670536860f46}">
+      <Declaration><![CDATA[PROPERTY P_Configuration : ST_HMIConfiguration]]></Declaration>
+      <Get Name="Get" Id="{5871bf39-9c35-4e31-8f00-f8b8922a3e78}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[P_Configuration := configs;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="P_Status" Id="{f5c47947-7d01-41d6-834a-78421613186a}">
+      <Declaration><![CDATA[PROPERTY P_Status : ST_HMIStatus]]></Declaration>
+      <Get Name="Get" Id="{10f29e8a-bebe-4e99-ab24-dc1bfc325cde}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[P_Status := status;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{a4780232-334c-4510-a907-cfe7552427cb}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[status := P_Status;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+  </POU>
+</TcPlcObject>

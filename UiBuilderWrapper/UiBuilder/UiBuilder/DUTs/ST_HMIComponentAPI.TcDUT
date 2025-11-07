@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_HMIComponentAPI" Id="{de9cb45b-e895-47f7-93d7-0e4ccd710743}">
+    <Declaration><![CDATA[TYPE ST_HMIComponentAPI :
+STRUCT 
+	Done : BOOL;
+	Busy : BOOL;
+	Error : BOOL;
+	ErrorID : BYTE;
+	Ready : BOOL;
+	Enabled: BOOL;
+	Homed: BOOL;
+	Moving : BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
