@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_HMISystemStatus" Id="{d2e3f4a5-b6c7-4d8e-9f0a-1b2c3d4e5f6a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_HMISystemStatus EXTENDS FB_HMIBase
+VAR
+	// References to PLC components (read-only access)
+	controlMode				: REFERENCE TO FB_ControlMode;
+	systemIntlk				: REFERENCE TO FB_PermIntlk;
+	packMLSequencer			: REFERENCE TO FB_PackMLSequencer;
+	recipeManager			: REFERENCE TO I_RecipeManager;
+	operationSequencer		: REFERENCE TO I_OpSequence;
+
+	// Consolidated system status
+	systemStatus			: ST_HMISystemStatus;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Cyclic" Id="{e3f4a5b6-c7d8-4e9f-0a1b-2c3d4e5f6a7b}">
+      <Declaration><![CDATA[METHOD Cyclic
+VAR
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Update control mode status
+IF __ISVALIDREF(controlMode) THEN
+	systemStatus.ControlMode := TO_STRING(controlMode.P_CurrentMode);
+	systemStatus.CanChangeMode := controlMode.P_CanChangeMode;
+END_IF
+
+// Update system interlock status
+IF __ISVALIDREF(systemIntlk) THEN
+	systemStatus.SystemReady := systemIntlk.P_SystemReady;
+	systemStatus.InterlockCount := systemIntlk.P_ActiveInterlockCount;
+	systemStatus.SystemFaulted := systemIntlk.P_HasFaults;
+END_IF
+
+// Update PackML sequencer status
+IF __ISVALIDREF(packMLSequencer) THEN
+	systemStatus.PackMLState := TO_STRING(packMLSequencer.P_CurrentState);
+	systemStatus.PackMLMode := TO_STRING(packMLSequencer.P_CurrentMode);
+	systemStatus.SystemBusy := packMLSequencer.P_Busy;
+END_IF
+
+// Update recipe manager status
+IF __ISVALIDREF(recipeManager) THEN
+	systemStatus.ActiveRecipeID := recipeManager.P_ActiveRecipeID;
+	systemStatus.ActiveRecipeName := recipeManager.P_ActiveRecipeName;
+	systemStatus.RecipeLoaded := recipeManager.P_RecipeLoaded;
+END_IF
+
+// Update operation sequencer status
+IF __ISVALIDREF(operationSequencer) THEN
+	systemStatus.OperationRunning := operationSequencer.P_Running;
+	systemStatus.OperationBusy := operationSequencer.P_Busy;
+	systemStatus.CurrentMacroIndex := operationSequencer.P_CurrentMacroIndex;
+
+	IF operationSequencer.P_Error THEN
+		systemStatus.SystemError := TRUE;
+		systemStatus.ErrorMessage := operationSequencer.P_ErrorMessage;
+	END_IF
+END_IF
+
+// Consolidate overall system error status
+systemStatus.SystemError := systemStatus.SystemFaulted OR
+                           (operationSequencer.P_Error IF __ISVALIDREF(operationSequencer) ELSE FALSE);
+
+// Update base HMI status
+status.HmiStatus.Busy := systemStatus.SystemBusy OR systemStatus.OperationBusy;
+status.HmiStatus.Error := systemStatus.SystemError;
+status.HmiStatus.Enabled := systemStatus.SystemReady;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Init" Id="{f4a5b6c7-d8e9-4f0a-1b2c-3d4e5f6a7b8c}">
+      <Declaration><![CDATA[METHOD Init : BOOL
+VAR_INPUT
+	refControlMode			: REFERENCE TO FB_ControlMode;
+	refSystemIntlk			: REFERENCE TO FB_PermIntlk;
+	refPackMLSequencer		: REFERENCE TO FB_PackMLSequencer;
+	refRecipeManager		: REFERENCE TO I_RecipeManager;
+	refOperationSequencer	: REFERENCE TO I_OpSequence;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Store references to backend components
+controlMode REF= refControlMode;
+systemIntlk REF= refSystemIntlk;
+packMLSequencer REF= refPackMLSequencer;
+recipeManager REF= refRecipeManager;
+operationSequencer REF= refOperationSequencer;
+
+Init := TRUE;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="P_SystemStatus" Id="{a5b6c7d8-e9f0-4a1b-2c3d-4e5f6a7b8c9d}">
+      <Declaration><![CDATA[PROPERTY P_SystemStatus : ST_HMISystemStatus]]></Declaration>
+      <Get Name="Get" Id="{b6c7d8e9-f0a1-4b2c-3d4e-5f6a7b8c9d0e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[P_SystemStatus := systemStatus;
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="GetInterlockInfo" Id="{c7d8e9f0-a1b2-4c3d-4e5f-6a7b8c9d0e1f}">
+      <Declaration><![CDATA[METHOD GetInterlockInfo : STRING(255)
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Get human-readable interlock information
+IF __ISVALIDREF(systemIntlk) THEN
+	GetInterlockInfo := systemIntlk.GetInterlockSummary();
+ELSE
+	GetInterlockInfo := 'No interlock system available';
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="AcknowledgeError" Id="{d8e9f0a1-b2c3-4d4e-5f6a-7b8c9d0e1f2a}">
+      <Declaration><![CDATA[METHOD AcknowledgeError : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Acknowledge system errors
+IF __ISVALIDREF(operationSequencer) THEN
+	operationSequencer.AcknowledgeError();
+	AcknowledgeError := TRUE;
+END_IF
+
+IF __ISVALIDREF(systemIntlk) THEN
+	systemIntlk.Reset();
+END_IF
+
+systemStatus.SystemError := FALSE;
+systemStatus.ErrorMessage := '';
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

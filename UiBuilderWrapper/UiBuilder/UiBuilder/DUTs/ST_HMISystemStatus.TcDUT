@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_HMISystemStatus" Id="{c1d2e3f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f}">
+    <Declaration><![CDATA[TYPE ST_HMISystemStatus :
+STRUCT
+	// Control mode status
+	ControlMode				: STRING(20);		// Current mode: Manual, Auto, Maintenance, etc.
+	CanChangeMode			: BOOL;				// Whether mode changes are allowed
+
+	// System readiness
+	SystemReady				: BOOL;				// System is ready to operate
+	SystemFaulted			: BOOL;				// System has faults
+	InterlockCount			: DINT;				// Number of active interlocks
+
+	// PackML state
+	PackMLState				: STRING(20);		// Current PackML state (Idle, Execute, Complete, etc.)
+	PackMLMode				: STRING(20);		// PackML mode (Production, Maintenance, Manual, etc.)
+
+	// Recipe status
+	ActiveRecipeID			: DINT;				// Currently loaded recipe ID
+	ActiveRecipeName		: STRING(50);		// Currently loaded recipe name
+	RecipeLoaded			: BOOL;				// A recipe is loaded
+
+	// Operation status
+	OperationRunning		: BOOL;				// An operation/sequence is running
+	OperationBusy			: BOOL;				// Operation sequencer is busy
+	CurrentMacroIndex		: DINT;				// Current macro being executed
+
+	// General system status
+	SystemBusy				: BOOL;				// Overall system busy flag
+	SystemError				: BOOL;				// Overall system error flag
+	ErrorMessage			: STRING(255);		// Current error message if any
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

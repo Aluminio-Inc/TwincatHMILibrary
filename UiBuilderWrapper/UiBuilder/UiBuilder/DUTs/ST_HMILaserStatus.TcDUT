@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_HMILaserStatus" Id="{d1e2f3a4-b5c6-4d7e-8f9a-0b1c2d3e4f5a}">
+    <Declaration><![CDATA[TYPE ST_HMILaserStatus EXTENDS ST_HMIStatus :
+STRUCT
+	// Laser-specific status fields
+	PowerLevel		: LREAL;	// Current power level (%)
+	IsFiring		: BOOL;		// Laser is currently emitting
+	IsReady			: BOOL;		// Laser is ready to fire
+	Temperature		: LREAL;	// Laser temperature (°C) if available
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

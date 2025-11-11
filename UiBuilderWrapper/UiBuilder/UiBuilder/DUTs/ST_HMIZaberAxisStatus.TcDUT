@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_HMIZaberAxisStatus" Id="{e1f2a3b4-c5d6-4e7f-8a9b-0c1d2e3f4a5b}">
+    <Declaration><![CDATA[TYPE ST_HMIZaberAxisStatus EXTENDS ST_HMIStatus :
+STRUCT
+	// Position and motion status
+	CurrentPosition		: LREAL;		// Current position (mm or degrees)
+	TargetPosition		: LREAL;		// Target position (mm or degrees)
+	Velocity			: LREAL;		// Current velocity
+
+	// State flags
+	IsHomed				: BOOL;			// Axis has been homed
+	IsMoving			: BOOL;			// Axis is currently moving
+	InPosition			: BOOL;			// Axis is at target position
+
+	// Index for multi-axis systems
+	AxisIndex			: DINT;			// Which axis this status represents
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
