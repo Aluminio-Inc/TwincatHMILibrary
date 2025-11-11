@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_HMIWrapper" Id="{bd8d4674-e58e-47ef-b371-fe199b5f40ce}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_HMIWrapper
+VAR_IN_OUT
+	Motion : FB_MotionDevices;
+	HVPS: FB_HVPS;
+	Discrete : FB_BinaryDevice;
+	Vision: FB_HMIVision;
+	// PLC : V3ToolPLC; 
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="HandeCommands" Id="{6564dcd2-e724-4b2f-a668-432b1df95edd}">
+      <Declaration><![CDATA[METHOD HandeCommands : BOOL
+VAR_INPUT
+
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Init" Id="{a82e4cb6-dce8-446c-af1d-0fedfcfecce1}">
+      <Declaration><![CDATA[METHOD Init : BOOL
+VAR_INPUT
+	refMotion : Motion.I_WebDrive;
+	refHVPS: FB_HVPS_System;
+	refDiscrete : Discrete.I_DiscreteBase;
+	refVision: Vision.I_Vision;
+	// PLC : V3ToolPLC; 
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>
