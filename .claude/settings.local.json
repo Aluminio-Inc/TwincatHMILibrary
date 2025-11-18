@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(dir \"C:\\Users\\tsion\\Documents\\GitHub\\UiBuilder\")",
+      "Bash(dir \"C:\\Users\\tsion\\Documents\\GitHub\" /s /b)",
+      "Bash(findstr:*)",
+      "Bash(dir:*)",
+      "Bash(cat:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

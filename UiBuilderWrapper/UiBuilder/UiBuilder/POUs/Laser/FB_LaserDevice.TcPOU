@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_LaserDevice" Id="{3c1e743e-1cf8-498c-8d92-ff11ea68c6cc}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_LaserDevice EXTENDS FB_HMIBase
+VAR
+	laser : Discrete.I_Laser;  // Interface reference to laser
+	laserCMD : ST_HMILaserCommand;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Cyclic" Id="{0bed08d2-7aa3-4583-abaa-5aae916f8baf}">
+      <Declaration><![CDATA[METHOD Cyclic
+VAR
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Handle commands
+IF laserCMD.PowerOn THEN
+	laser.Activate();
+	laserCMD.PowerOn := FALSE;
+END_IF
+
+IF laserCMD.PowerOff THEN
+	laser.Deactivate();
+	laserCMD.PowerOff := FALSE;
+END_IF
+
+IF laserCMD.Abort THEN
+	laser.Abort();
+	laserCMD.Abort := FALSE;
+END_IF
+
+IF laserCMD.MarkVerticalCuts THEN
+	laser.MarkVerticalCuts();
+	laserCMD.MarkVerticalCuts := FALSE;
+END_IF
+
+IF laserCMD.MarkEndCuts THEN
+	laser.MarkEndCuts();
+	laserCMD.MarkEndCuts := FALSE;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Init" Id="{8ad07627-6680-466c-a5fa-1c0f4547334c}">
+      <Declaration><![CDATA[METHOD Init : BOOL
+VAR_INPUT
+	refLaser : Discrete.I_Laser;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[laser := refLaser;
+Init := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

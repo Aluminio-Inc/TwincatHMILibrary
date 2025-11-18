@@ -2,31 +2,38 @@
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_HMIWrapper" Id="{bd8d4674-e58e-47ef-b371-fe199b5f40ce}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_HMIWrapper
-VAR_IN_OUT
-	// System-level status (read-only from HMI perspective)
-	SystemStatus : FB_HMISystemStatus;
-
-	// Component wrappers
+VAR
 	Motion : FB_MotionDevices;
 	HVPS: FB_HVPS;
-
-	// Discrete devices - separate instances for each device type
 	AirKnives : FB_BinaryDevice;
 	VacuumRelay : FB_BinaryDevice;
 	VacuumPurge : FB_BinaryDevice;
-
-	// Motion components
-	Zaber : FB_Zaber;
-
+	Laser : FB_LaserDevice;
 	Vision: FB_HMIVision;
-	Laser: FB_HMILaser;
+	Zaber : FB_Zaber;
 	// PLC : V3ToolPLC;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
-    <Method Name="HandeCommands" Id="{6564dcd2-e724-4b2f-a668-432b1df95edd}">
-      <Declaration><![CDATA[METHOD HandeCommands : BOOL
+    <Method Name="Cyclic" Id="{503900e1-7251-4db4-8d78-bfc87e868742}">
+      <Declaration><![CDATA[METHOD Cyclic : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[HVPS.Cyclic();
+Vision.Cyclic();
+Motion.Cyclic();
+AirKnives.Cyclic();
+VacuumRelay.Cyclic();
+VacuumPurge.Cyclic();
+Laser.Cyclic();
+Zaber.Cyclic();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="HandleCommands" Id="{6564dcd2-e724-4b2f-a668-432b1df95edd}">
+      <Declaration><![CDATA[METHOD HandleCommands : BOOL
 VAR_INPUT
 
 END_VAR
@@ -38,70 +45,26 @@ END_VAR
     <Method Name="Init" Id="{a82e4cb6-dce8-446c-af1d-0fedfcfecce1}">
       <Declaration><![CDATA[METHOD Init : BOOL
 VAR_INPUT
-	// System-level component references (for read-only status)
-	refControlMode			: REFERENCE TO FB_ControlMode;
-	refSystemIntlk			: REFERENCE TO FB_PermIntlk;
-	refPackMLSequencer		: REFERENCE TO FB_PackMLSequencer;
-	refRecipeManager		: REFERENCE TO I_RecipeManager;
-	refOperationSequencer	: REFERENCE TO I_OpSequence;
-
-	// Component references
 	refMotion : Motion.I_WebDrive;
-	refHVPS: FB_HVPS_System;
-
-	// Discrete device references
+	refHVPS: REFERENCE TO FB_HVPS_System;
 	refAirKnives : Discrete.I_DiscreteBase;
 	refVacuumRelay : Discrete.I_DiscreteBase;
 	refVacuumPurge : Discrete.I_DiscreteBase;
-
-	// Motion component references
-	refZaber : Motion.I_ZaberAxisGroup;
-
+	refLaser : Discrete.I_Laser;
 	refVision: Vision.I_Vision;
-	refLaser: Laser.I_Laser;
+	refZaberGroup : Motion.I_ZaberAxisGroup;
 	// PLC : V3ToolPLC;
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[// Initialize system status wrapper
-SystemStatus.Init(
-	refControlMode := refControlMode,
-	refSystemIntlk := refSystemIntlk,
-	refPackMLSequencer := refPackMLSequencer,
-	refRecipeManager := refRecipeManager,
-	refOperationSequencer := refOperationSequencer
-);
-
-// Initialize component wrappers
-Motion.Init(refMotion);
+        <ST><![CDATA[Motion.Init(refMotion);
 HVPS.Init(refHVPS);
 AirKnives.Init(refAirKnives);
 VacuumRelay.Init(refVacuumRelay);
 VacuumPurge.Init(refVacuumPurge);
-Zaber.Init(refZaber);
 Vision.Init(refVision);
 Laser.Init(refLaser);
-
-Init := TRUE;
-]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="Cyclic" Id="{e9f0a1b2-c3d4-4e5f-6a7b-8c9d0e1f2a3b}">
-      <Declaration><![CDATA[METHOD Cyclic
-VAR
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[// Update all wrapper status from PLC components
-SystemStatus.Cyclic();
-Motion.Cyclic();
-HVPS.Cyclic();
-AirKnives.Cyclic();
-VacuumRelay.Cyclic();
-VacuumPurge.Cyclic();
-Zaber.Cyclic();
-Vision.Cyclic();
-Laser.Cyclic();
+Zaber.Init(refZaberGroup);
 ]]></ST>
       </Implementation>
     </Method>

@@ -33,7 +33,12 @@ VAR
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[// Sync status for each supply 
+        <ST><![CDATA[// Sync status for each supply
+
+// Check if HVPS reference is valid before accessing
+IF NOT __ISVALIDREF(hvps) THEN
+	RETURN;
+END_IF
 
 status := hvps.P_supplies_status;
 

@@ -9,7 +9,7 @@
     <WriteProductVersion>false</WriteProductVersion>
     <GenerateTpy>false</GenerateTpy>
     <Name>UiBuilder</Name>
-    <ProgramVersion>3.1.4026.18</ProgramVersion>
+    <ProgramVersion>3.1.4026.19</ProgramVersion>
     <Application>{884f42f6-eded-4396-84ac-2f879e64d15e}</Application>
     <TypeSystem>{f81191fa-fbf1-4fcf-be65-53a0261e8f80}</TypeSystem>
     <Implicit_Task_Info>{1fa5bedd-9c73-4bc5-8dde-90a441420adc}</Implicit_Task_Info>

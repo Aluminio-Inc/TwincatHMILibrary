@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_HMIZaberAxisCommand" Id="{435d1f37-52fb-45a9-8cbc-f8d4fabc0e37}">
+    <Declaration><![CDATA[TYPE ST_HMIZaberAxisCommand EXTENDS ST_HMIStatus :
+STRUCT
+	Stop : BOOL;
+	Start : BOOL;
+	
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

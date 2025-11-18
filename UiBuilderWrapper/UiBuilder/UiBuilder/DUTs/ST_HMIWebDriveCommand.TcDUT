@@ -5,8 +5,7 @@
 STRUCT
 	PowerOn		: BOOL;
 	PowerOff	: BOOL;
-	Resert		: BOOL;
-	Reser 		: BOOL;
+	Reset		: BOOL;
 	Stop 		: BOOL ;
 	Calibrate	: BOOL;
 	

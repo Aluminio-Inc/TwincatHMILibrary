@@ -16,6 +16,10 @@
     <Implicit_KindOfTask>{5af3a690-d442-41d8-a596-80b85b439c05}</Implicit_KindOfTask>
     <Implicit_Jitter_Distribution>{96e88afa-dff8-4b5c-b6da-1eda08fac579}</Implicit_Jitter_Distribution>
     <LibraryReferences>{262a360b-55f7-46cc-9c5f-190e84ba5a8b}</LibraryReferences>
+    <Released>false</Released>
+    <Title>UiBuilder</Title>
+    <ProjectVersion>1.1.1</ProjectVersion>
+    <Company>Photara</Company>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DUTs\ST_HMICommand.TcDUT">
@@ -30,6 +34,9 @@
     <Compile Include="DUTs\ST_HMIHvpsStatus.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\ST_HMILaserCommand.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\ST_HMIWebDriveStatus.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -39,10 +46,19 @@
     <Compile Include="DUTs\ST_HMIWebDriveCommand.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\ST_HMIZaberAxisStatus.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\ST_HMIZaberAxisCommand.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ITFs\I_HMIBase.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PlcTask.TcTTO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Base\FB_HMIBase.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\Discrete\FB_BinaryDevice.TcPOU">
@@ -51,7 +67,10 @@
     <Compile Include="POUs\Discrete\I_BinaryDevice.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB_HMIBase.TcPOU">
+    <Compile Include="POUs\FB_HMIWrapper.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Laser\FB_LaserDevice.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
@@ -60,13 +79,13 @@
     <Compile Include="POUs\Motion\Components\FB_RotaryEncoder.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Motion\Components\FB_Zaber.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="POUs\Motion\FB_MotionDevices.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\HVPS\FB_HVPS.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Motion\FB_Zaber.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\Vision\FB_HMIVision.TcPOU">
@@ -108,6 +127,8 @@
     <Folder Include="POUs\Motion" />
     <Folder Include="POUs\HVPS" />
     <Folder Include="POUs\Motion\Components" />
+    <Folder Include="POUs\Base" />
+    <Folder Include="POUs\Laser" />
     <Folder Include="POUs\Vision" />
     <Folder Include="Tests\BaseTests" />
     <Folder Include="VISUs" />
@@ -139,6 +160,10 @@
       <DefaultResolution>Tc3_Module, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc3_Module</Namespace>
       <SystemLibrary>true</SystemLibrary>
+    </PlaceholderReference>
+    <PlaceholderReference Include="UiBuilder">
+      <DefaultResolution>UiBuilder, * (Photara)</DefaultResolution>
+      <Namespace>UiBuilder</Namespace>
     </PlaceholderReference>
     <PlaceholderReference Include="Vision">
       <DefaultResolution>Vision, * (Photara)</DefaultResolution>
@@ -219,8 +244,8 @@
   <ProjectExtensions>
     <PlcProjectOptions>
       <XmlArchive>
-        <Data>
-          <o xml:space="preserve" t="OptionKey">
+  <Data>
+    <o xml:space="preserve" t="OptionKey">
       <v n="Name">"&lt;ProjectRoot&gt;"</v>
       <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
         <v>{192FAD59-8248-4824-A8DE-9177C94C195A}</v>
@@ -290,14 +315,14 @@
       </d>
       <d n="Values" t="Hashtable" />
     </o>
-        </Data>
-        <TypeList>
-          <Type n="Boolean">System.Boolean</Type>
-          <Type n="Hashtable">System.Collections.Hashtable</Type>
-          <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
-          <Type n="String">System.String</Type>
-        </TypeList>
-      </XmlArchive>
+  </Data>
+  <TypeList>
+    <Type n="Boolean">System.Boolean</Type>
+    <Type n="Hashtable">System.Collections.Hashtable</Type>
+    <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
+    <Type n="String">System.String</Type>
+  </TypeList>
+</XmlArchive>
     </PlcProjectOptions>
   </ProjectExtensions>
 </Project>

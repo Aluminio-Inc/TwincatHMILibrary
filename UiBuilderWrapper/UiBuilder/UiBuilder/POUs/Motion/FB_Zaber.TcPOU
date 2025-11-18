@@ -1,0 +1,242 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_Zaber" Id="{3f86e019-844c-44a2-a406-e223e61a7679}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Zaber EXTENDS FB_HMIBase
+VAR
+	zaberGroup : Motion.I_ZaberAxisGroup;  // Interface to Zaber axis group
+	axisStatus : ARRAY[0..3] OF ST_HMIZaberAxisStatus;  // Status for 4 axes
+	numAxes : DINT := 4;  // Number of axes in the group
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Cyclic" Id="{a1b2c3d4-e5f6-7890-1234-567890abcdef}">
+      <Declaration><![CDATA[METHOD Cyclic
+VAR
+	i : DINT;
+	refZaberAxes : REFERENCE TO ARRAY[GC_Zaber.INDEX_AXISGRPINST_MIN..GC_Zaber.INDEX_AXISGRPINST_MAX] OF FB_ZaberSerialAxis;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Sync status from individual axes
+IF zaberGroup <> 0 THEN
+	// Get reference to the axis array
+	refZaberAxes REF= zaberGroup.P_ZaberAxes;
+
+	IF __ISVALIDREF(refZaberAxes) THEN
+		FOR i := 0 TO numAxes - 1 DO
+			// Get current position using interface method
+			axisStatus[i].CurrentPosition := zaberGroup.GetPosition(AxisIndex := i);
+
+			// Access detailed status from individual axis object
+			axisStatus[i].Velocity := refZaberAxes[i].P_ZaberAxisStatus.Velocity;
+			axisStatus[i].IsHomed := refZaberAxes[i].P_ZaberAxisStatus.AutoHome.AutoHomeAttempted;
+			axisStatus[i].IsMoving := refZaberAxes[i].P_ZaberAxisStatus.HMIStatus.MotionStatus;
+			axisStatus[i].InPosition := refZaberAxes[i].P_ZaberAxisStatus.AtCommandedPosition;
+			axisStatus[i].AxisIndex := i;
+			axisStatus[i].TargetPosition := refZaberAxes[i].P_ZaberConfiguration.SetDynamics.Position;
+
+			// Map to HMI status
+			axisStatus[i].HmiStatus.Busy := refZaberAxes[i].P_ZaberAxisStatus.HMIStatus.MotionStatus;
+			axisStatus[i].HmiStatus.Done := refZaberAxes[i].P_ZaberAxisStatus.AtCommandedPosition;
+			axisStatus[i].HmiStatus.Error := refZaberAxes[i].P_ZaberAxisStatus.ComponentStatus.BaseStatus.Error;
+			axisStatus[i].HmiStatus.Enabled := TRUE; // Zaber doesn't have explicit enable/disable
+		END_FOR
+	END_IF
+END_IF
+
+// Handle base commands - Stop all axes
+IF cmd.Disable THEN
+	StopAll();
+	cmd.Disable := FALSE;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Init" Id="{b2c3d4e5-f6a7-8901-2345-67890abcdef1}">
+      <Declaration><![CDATA[METHOD Init : BOOL
+VAR_INPUT
+	refZaberGroup : Motion.I_ZaberAxisGroup;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[zaberGroup := refZaberGroup;
+Init := zaberGroup <> 0;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="MoveAbsolute" Id="{c3d4e5f6-a7b8-9012-3456-7890abcdef12}">
+      <Declaration><![CDATA[METHOD MoveAbsolute : Base.E_CommandResult
+VAR_INPUT
+	axisIndex : DINT;
+	position : LREAL;
+	velocity : LREAL := 0.0;
+	acceleration : LREAL := 0.0;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Move axis to absolute position
+IF zaberGroup <> 0 AND axisIndex >= 0 AND axisIndex < numAxes THEN
+	MoveAbsolute := zaberGroup.MoveAbsolute(
+		position := position,
+		velocity := velocity,
+		acceleration := acceleration,
+		AxisIndex := axisIndex
+	);
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="MoveRelative" Id="{d4e5f6a7-b8c9-0123-4567-890abcdef123}">
+      <Declaration><![CDATA[METHOD MoveRelative : Base.E_CommandResult
+VAR_INPUT
+	axisIndex : DINT;
+	distance : LREAL;
+	velocity : LREAL := 0.0;
+	acceleration : LREAL := 0.0;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Move axis relative to current position
+IF zaberGroup <> 0 AND axisIndex >= 0 AND axisIndex < numAxes THEN
+	MoveRelative := zaberGroup.MoveRelative(
+		distance := distance,
+		velocity := velocity,
+		acceleration := acceleration,
+		AxisIndex := axisIndex
+	);
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="MoveToMaximum" Id="{809c7d23-986a-4d88-86b4-c560e3b72516}">
+      <Declaration><![CDATA[METHOD MoveToMaximum : Base.E_CommandResult
+VAR_INPUT
+	axisIndex : DINT;
+	velocity : LREAL := 0.0;
+	acceleration : LREAL := 0.0;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF zaberGroup <> 0 AND axisIndex >= 0 AND axisIndex < numAxes THEN
+	MoveToMaximum := zaberGroup.MoveToMaximum(
+		velocity := velocity,
+		acceleration := acceleration,
+		AxisIndex := axisIndex
+	);
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="MoveToMinimum" Id="{90f96878-1a2a-4244-819a-d321f103e540}">
+      <Declaration><![CDATA[METHOD MoveToMinimum : Base.E_CommandResult
+VAR_INPUT
+	axisIndex : DINT;
+	velocity : LREAL := 0.0;
+	acceleration : LREAL := 0.0;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF zaberGroup <> 0 AND axisIndex >= 0 AND axisIndex < numAxes THEN
+	MoveToMinimum := zaberGroup.MoveToMinimum(
+		velocity := velocity,
+		acceleration := acceleration,
+		AxisIndex := axisIndex
+	);
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Stop" Id="{a7b8c9d0-e1f2-3456-7890-abcdef123456}">
+      <Declaration><![CDATA[METHOD Stop : Base.E_CommandResult
+VAR_INPUT
+	axisIndex : DINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Stop the specified axis
+IF zaberGroup <> 0 AND axisIndex >= 0 AND axisIndex < numAxes THEN
+	Stop := zaberGroup.Stop(AxisIndex := axisIndex);
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="StopAll" Id="{b8c9d0e1-f2a3-4567-8901-bcdef1234567}">
+      <Declaration><![CDATA[METHOD StopAll : BOOL
+VAR
+	i : DINT;
+	result : Base.E_CommandResult;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Stop all axes in the group
+IF zaberGroup <> 0 THEN
+	FOR i := 0 TO numAxes - 1 DO
+		result := zaberGroup.Stop(AxisIndex := i);
+	END_FOR
+	StopAll := TRUE;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="LockstepHome" Id="{d3e4dad8-2371-4b10-8b77-8d151067e944}">
+      <Declaration><![CDATA[METHOD LockstepHome : Base.E_CommandResult
+VAR_INPUT
+	axisIndex : DINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF zaberGroup <> 0 AND axisIndex >= 0 AND axisIndex < numAxes THEN
+	LockstepHome := zaberGroup.LockstepHome(AxisIndex := axisIndex);
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="LockstepMoveAbsolute" Id="{6642971b-a28c-4ed3-8aa7-03a3f917b026}">
+      <Declaration><![CDATA[METHOD LockstepMoveAbsolute : Base.E_CommandResult
+VAR_INPUT
+	axisIndex : DINT;
+	position : LREAL;
+	velocity : LREAL := 0.0;
+	acceleration : LREAL := 0.0;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF zaberGroup <> 0 AND axisIndex >= 0 AND axisIndex < numAxes THEN
+	LockstepMoveAbsolute := zaberGroup.LockstepMoveAbsolute(
+		position := position,
+		velocity := velocity,
+		acceleration := acceleration,
+		AxisIndex := axisIndex
+	);
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="P_AllAxesStatus" Id="{f2a3b4c5-d6e7-8901-2345-f12345678901}">
+      <Declaration><![CDATA[PROPERTY P_AllAxesStatus : REFERENCE TO ARRAY[0..3] OF ST_HMIZaberAxisStatus]]></Declaration>
+      <Get Name="Get" Id="{a3b4c5d6-e7f8-9012-3456-012345678912}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[P_AllAxesStatus REF= axisStatus;
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="P_AxisCount" Id="{b4c5d6e7-f8a9-0123-4567-123456789123}">
+      <Declaration><![CDATA[PROPERTY P_AxisCount : DINT]]></Declaration>
+      <Get Name="Get" Id="{c5d6e7f8-a9b0-1234-5678-234567890234}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[P_AxisCount := numAxes;
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+  </POU>
+</TcPlcObject>

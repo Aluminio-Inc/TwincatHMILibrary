@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_HMILaserCommand" Id="{12da18cc-3c07-4eb4-ad91-e9bcecb46872}">
+    <Declaration><![CDATA[TYPE ST_HMILaserCommand :
+STRUCT
+	PowerOn				: BOOL;
+	PowerOff			: BOOL;
+	Abort				: BOOL;
+	MarkVerticalCuts	: BOOL;
+	MarkEndCuts			: BOOL;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

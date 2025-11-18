@@ -1063,7 +1063,7 @@ External Setpoint Generation:
 		</System>
 		<Plc>
 			<Project GUID="{C56391AA-13E8-4774-BF68-7C76B2D6FD62}" Name="UiBuilder" PrjFilePath="UiBuilder\UiBuilder.plcproj" TmcFilePath="UiBuilder\UiBuilder.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{F6F81EEC-E13F-D5B7-DC4C-DA066BCF56FF}" TmcPath="UiBuilder\UiBuilder.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{D4D19BB9-0AEB-B3CB-B0BA-53CB523F36A2}" TmcPath="UiBuilder\UiBuilder.tmc">
 					<Name>UiBuilder Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="2" AreaNo="1">
